@@ -71,6 +71,9 @@ a:hover {
 			<p class="welcome-message"><%= loggedInUser.getUsername() %>님
 				반갑습니다 😊
 			</p>
+			<form action="cart.jsp" method="get" style="display: inline;">
+            	<button type="submit" class="button">장바구니</button>
+         	</form>
 			<form action="index.jsp" method="post">
 				<button type="submit" name="logout" class="button" style="color: #2c3e50">로그아웃</button>
 			</form>
