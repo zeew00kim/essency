@@ -4,11 +4,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Footer Page</title>
+<style>
+	.footer {
+		background-color: #B8D0FA;
+		color: #2c3e50;
+		margin: 0;
+	}
+</style>
 </head>
 <body>
  <footer class="footer">
-      <span style="font-weight: bold">웹서비스프로그래밍 Team_Project</span>
+      <span style="font-weight: bold">Essency 화장품 쇼핑몰</span>
     </footer>
 </body>
 </html>

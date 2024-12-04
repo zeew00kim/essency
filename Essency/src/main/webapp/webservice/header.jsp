@@ -27,6 +27,7 @@ a {
 	text-decoration: none;
 	font-weight: bold;
 	color: black;
+	transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 a:hover {
@@ -48,6 +49,7 @@ a:hover {
 	color: black;
 	font-weight: bold;
 	border-radius: 5px;
+	transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .button:hover {
@@ -70,12 +72,12 @@ a:hover {
 				반갑습니다 😊
 			</p>
 			<form action="index.jsp" method="post">
-				<button type="submit" name="logout" class="button">로그아웃</button>
+				<button type="submit" name="logout" class="button" style="color: #2c3e50">로그아웃</button>
 			</form>
 			<% } else { %>
 			<!-- 로그인하지 않은 경우 -->
-			<a href="/Essency/jsp/signUp.jsp" class="button">회원가입</a> <a
-				href="/Essency/jsp/login.jsp" class="button">로그인</a>
+			<a href="/Essency/jsp/signUp.jsp" class="button" style="color: #2c3e50">회원가입</a> <a
+				href="/Essency/jsp/login.jsp" class="button" style="color: #2c3e50">로그인</a>
 			<% } %>
 		</div>
 		<div class="h2">
