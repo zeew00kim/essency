@@ -1,0 +1,145 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.comments {
+    list-style: none;
+    padding: 0;
+}
+
+.comments li {
+    margin-bottom: 10px;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.button {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    background: #007BFF;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.button:hover {
+    background: #0056b3;
+}
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* 헤더 스타일 */
+.header {
+    position: relative; /* 자식 요소를 자유롭게 배치하기 위한 상대 위치 */
+    padding: 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 로고 중앙 정렬 */
+.header-logo {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.header-logo img {
+    width: 200px; /* 로고 크기 */
+    height: auto;
+}
+
+/* 링크 우측 상단 배치 */
+.header-links {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.header-links a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.header-links a:hover {
+    color: #007BFF;
+}
+
+<style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    * {
+      box-sizing: inherit;
+    }
+    a {
+      text-decoration: none;
+      font-weight: bold; 
+      color: black;
+    }
+    a:hover {
+      text-decoration: underline;
+      color: purple !important;
+      transform: scale(1.05);
+    }
+    .welcome-message {
+      color: black;
+      font-weight: bold;
+    }
+    .button {
+      padding: 10px 20px;
+      background-color: #B8D0FA;
+      border: none;
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+    .button:hover {
+      background-color: Skyblue;
+      color: purple;
+      transform: scale(1.05);
+    }
+  </style>
