@@ -15,7 +15,7 @@
 </head>
 <body>
  <footer class="footer">
-      <span style="font-weight: bold">Essency 화장품 쇼핑몰</span>
+      <span style="font-weight: bold">essency 화장품 쇼핑몰</span>
     </footer>
 </body>
 </html>

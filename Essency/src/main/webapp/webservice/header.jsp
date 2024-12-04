@@ -82,7 +82,7 @@ a:hover {
 		</div>
 		<div class="h2">
 			<a href="index.jsp"> <img src="../webservice/image/logo.png"
-				width="289" height="103" alt="로고">
+				width="289" height="103" alt="로고" style="border: none">
 			</a>
 		</div>
 		<nav class="h3">
