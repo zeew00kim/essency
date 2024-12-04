@@ -10,7 +10,7 @@ public class UserDAO {
 	PreparedStatement pstmt = null;
 
 	final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	final String JDBC_URL = "jdbc:mysql://localhost:3306/webProgramming";
+	final String JDBC_URL = "jdbc:mysql://localhost:3306/team_project";
 
 	public void open() {
 		try {

@@ -139,35 +139,7 @@
 </head>
 <body>
   <div class="wrap">
-    <header class="header">
-      <div class="h1">
-        <% 
-          String userName = (String) session.getAttribute("userName");
-          if (userName != null) {
-        %> 
-          <p class="welcome-message"><%= userName %>님 반갑습니다 😊</p>
-          <form action="itemdetail.jsp" method="post" style="display: inline;">
-            <button type="submit" name="logout" class="button">로그아웃</button>
-          </form>
-        <% } else { %>
-          <a href="register.jsp" class="button">회원가입</a>
-          <a href="login.jsp" class="button">로그인</a>
-        <% } %>
-      </div>
-      <div class="h2">
-        <a href="index.jsp">
-          <img src="../webservice/image/스크린샷 2024-11-28 210005.png" width="289" height="103" alt="로고">
-        </a>
-      </div>
-      <nav class="h3">
-        <div class="h3_center">
-          <a href="all_item.jsp">전체상품</a>&nbsp;
-          <a href="lotion.jsp">로션/크림</a>&nbsp;
-          <a href="cleansing.jsp">클렌징</a>&nbsp;
-          <a href="ampoule.jsp">앰플/세럼</a>&nbsp;
-        </div>
-      </nav>
-    </header>
+    <%@ include file="header.jsp" %>
 
     <main class="main">
       <section class="m2">
@@ -179,16 +151,14 @@
           <span class="product-price">판매 가격&nbsp;&nbsp;15,000원</span>
           <span class="shipping-fee">배송비&nbsp;&nbsp;2,500원</span><br>
           <div class="buttons">
-            <button class="button" onclick="showCartBanner()">장바구니에 담기</button>
+            <button class="button" onclick="addToCart()">장바구니에 담기</button>
             <button class="button" onclick="checkLogin()">구매하기</button>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="footer">
-      <span style="font-weight: bold">웹프로그래밍응용 Team_Project</span>
-    </footer>
+    <%@ include file="footer.jsp" %>
   </div>
 
   <div class="overlay" id="overlay"></div>
@@ -198,23 +168,34 @@
     <button class="cancel" onclick="hideBanner()">취소</button>
   </div>
 
+  <!-- JavaScript에 userName 전달 -->
   <script>
-    function showCartBanner() {
-      document.getElementById('bannerMessage').innerText = "장바구니에 담으시겠습니까?";
-      document.getElementById('confirmButton').onclick = redirectToCart;
-      document.getElementById('overlay').style.display = 'block';
-      document.getElementById('confirmBanner').style.display = 'block';
-    }
+    const userName = '<%= (String) session.getAttribute("userName") %>'; // JSP 세션 변수 -> JavaScript 변수로 전달
 
-    function checkLogin() {
-      <% if (userName == null) { %>
+    function addToCart() {
+      if (!userName || userName === 'null') {
+        // 로그인이 되어 있지 않으면 로그인 배너 표시
         document.getElementById('bannerMessage').innerText = "로그인이 필요합니다!";
         document.getElementById('confirmButton').onclick = redirectToLogin;
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('confirmBanner').style.display = 'block';
-      <% } else { %>
+      } else {
+        // 로그인이 되어 있으면 장바구니로 이동
+        window.location.href = 'cart.jsp';
+      }
+    }
+
+    function checkLogin() {
+      if (!userName || userName === 'null') {
+        // 로그인이 되어 있지 않으면 로그인 배너 표시
+        document.getElementById('bannerMessage').innerText = "로그인이 필요합니다!";
+        document.getElementById('confirmButton').onclick = redirectToLogin;
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('confirmBanner').style.display = 'block';
+      } else {
+        // 로그인이 되어 있으면 구매 페이지로 이동
         window.location.href = 'buy.jsp';
-      <% } %>
+      }
     }
 
     function hideBanner() {
@@ -222,14 +203,11 @@
       document.getElementById('confirmBanner').style.display = 'none';
     }
 
-    function redirectToCart() {
-      window.location.href = 'cart.jsp';
-    }
-
     function redirectToLogin() {
-      window.location.href = 'login.jsp';
+      window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
     }
   </script>
+
   <% 
     if (request.getParameter("logout") != null) {
         session.invalidate();  
