@@ -38,9 +38,9 @@
       background-color: #B8D0FA;
       border: none;
       cursor: pointer;
-      color: black;
       font-weight: bold;
       border-radius: 5px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
     }
     .button:hover {
       background-color: Skyblue;
@@ -60,12 +60,12 @@
           <!-- 로그인한 경우 -->
           <p class="welcome-message"><%= loggedInUser.getUsername() %>님 반갑습니다 😊</p>
           <form action="/Essency/webservice/index.jsp" method="post">
-            <button type="submit" name="logout" class="button">로그아웃</button>
+            <button type="submit" name="logout" class="button" style="color: #2c3e50">로그아웃</button>
           </form>
         <% } else { %>
           <!-- 로그인하지 않은 경우 -->
-          <a href="/Essency/jsp/signUp.jsp" class="button">회원가입</a>
-          <a href="/Essency/jsp/login.jsp" class="button">로그인</a>
+          <a href="/Essency/jsp/signUp.jsp" class="button" style="color: #2c3e50">회원가입</a>
+          <a href="/Essency/jsp/login.jsp" class="button" style="color: #2c3e50">로그인</a>
         <% } %>
       </div>
       <div class="h2">
