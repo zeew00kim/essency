@@ -10,6 +10,51 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 	rel="stylesheet">
 </head>
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('<%= request.getContextPath() %>/webservice/image/login-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Roboto', sans-serif;
+    }
+    .card {
+      background-color: rgba(255, 255, 255, 0.9); /* 카드 배경을 약간 투명하게 */
+      border-radius: 15px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .container {
+      padding-top: 20px;
+    }
+    .card-title {
+      font-weight: bold;
+      color: #2c3e50; /* 진한 네이비 */
+    }
+    .form-control {
+      border-radius: 10px;
+    }
+    .btn-primary {
+      background-color: #B8D0FA;
+      border: none;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+    .btn-primary:hover {
+      background-color: skyblue;
+      color: purple;
+    }
+    .text-decoration-none {
+      color: #2c3e50 !important;
+    }
+    .text-decoration-none:hover {
+      color: purple !important;
+      text-decoration: underline;
+    }
+    .mb-3 {
+      font-weight: bold;
+      color: #2c3e50; 
+    }
+</style>
 <body>
 	<%@ include file="header.jsp"%>
 
@@ -168,5 +213,7 @@
 	});
 </script>
 </body>
+
+<%@ include file="footer.jsp" %>
 
 </html>
