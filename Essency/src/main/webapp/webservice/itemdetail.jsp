@@ -6,6 +6,7 @@
   <title>제품 상세 페이지</title>
   <link href="layout1.css" rel="stylesheet" type="text/css">
   <style>
+    /* 글로벌 스타일 */
     html, body {
       margin: 0;
       padding: 0;
@@ -13,16 +14,11 @@
       width: 100%;
       box-sizing: border-box;
     }
-
     * {
       box-sizing: inherit;
     }
-    
-    .welcome-message {
-      color: black;
-      font-weight: bold;
-    }
-    
+
+    /* 공통 스타일 */
     a {
       text-decoration: none;
       font-weight: bold;
@@ -33,7 +29,21 @@
       color: purple !important;
       transform: scale(1.05);
     }
-
+    .button {
+      padding: 10px 20px;
+      background-color: #b8d0fa;
+      cursor: pointer;
+      color: black;
+      border: none;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: skyblue;
+      color: purple;
+      transform: scale(1.05);
+    }
     .product-name {
       font-weight: bold;
       font-size: 1.5em;
@@ -43,45 +53,21 @@
       margin-top: 10px;
       display: block;
     }
-
     .buttons {
       margin-top: 20px;
       display: flex;
       gap: 10px;
     }
-    .buttons button {
-      padding: 10px 20px;
-      font-size: 1em;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: transform 0.3s ease, background-color 0.3s ease;
-    }
-    .buttons .button {
-      background-color: #b8d0fa;
-      border: 2px solid silver;
-      color: black;
-    }
-    .buttons .button:hover {
-      background-color: skyblue;
-      transform: scale(1.05);
+    .main_footer img {
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: auto;
+      height: auto;
+      display: block;
+      margin: 5px auto;
     }
 
-    .button {
-      padding: 10px 20px;
-      background-color: #B8D0FA;
-      cursor: pointer;
-      color: black;
-      border: none;
-      font-weight: bold;
-      border-radius: 5px;
-    }
-    .button:hover {
-      background-color: Skyblue;
-      color: purple;
-      transform: scale(1.05);
-    }
-
+    /* 배너 스타일 */
     .confirm-banner {
       display: none;
       position: fixed;
@@ -89,7 +75,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background-color: white;
-      border: 2px solid #B8D0FA;
+      border: 2px solid #b8d0fa;
       border-radius: 10px;
       padding: 20px;
       width: 300px;
@@ -106,24 +92,20 @@
       cursor: pointer;
     }
     .confirm-banner .confirm {
-      background-color: #B8D0FA;
+      background-color: #b8d0fa;
       color: black;
-      transition: transform 0.3s ease, background-color 0.3s ease;
     }
     .confirm-banner .confirm:hover {
-      background-color: Skyblue;
+      background-color: skyblue;
       color: purple;
-      transform: scale(1.05);
     }
     .confirm-banner .cancel {
       background-color: #ccc;
       color: black;
-      transition: transform 0.3s ease, background-color 0.3s ease;
     }
     .confirm-banner .cancel:hover {
       background-color: #999;
       color: purple;
-      transform: scale(1.05);
     }
     .overlay {
       display: none;
@@ -148,14 +130,30 @@
         </div>
         <div class="m2_right">
           <span class="product-name">제품명</span>
-          <span class="product-price">판매 가격&nbsp;&nbsp;15,000원</span>
-          <span class="shipping-fee">배송비&nbsp;&nbsp;2,500원</span><br>
+          <span class="product-price">판매 가격 15,000원</span>
+          <span class="shipping-fee">배송비 2,500원</span>
+          <span class="shipping-fee">배송일 결제 후 7일 이내 도착예정</span>
+          <span class="shipping-fee">배송/출고 cj대한통운(오네)</span>
           <div class="buttons">
             <button class="button" onclick="addToCart()">장바구니에 담기</button>
             <button class="button" onclick="checkLogin()">구매하기</button>
           </div>
         </div>
       </section>
+      <div class="main_footer">
+        <div class="mf1">
+          <img src="image/KakaoTalk_20241207_142012247_01.jpg" alt="상세정보 이미지 1">
+        </div>
+        <div class="mf2">
+          <img src="image/KakaoTalk_20241207_142012247_04.jpg" alt="상세정보 이미지 2">
+        </div>
+        <div class="mf3">          
+          <img src="image/KakaoTalk_20241207_142012247.jpg" alt="멤버십 혜택 이미지">
+        </div>
+        <div class="mf4">
+          <img src="image/KakaoTalk_20241207_142012247_03.jpg" alt="상품정보 이미지">
+        </div>
+      </div>
     </main>
 
     <%@ include file="footer.jsp" %>
@@ -168,34 +166,30 @@
     <button class="cancel" onclick="hideBanner()">취소</button>
   </div>
 
-  <!-- JavaScript에 userName 전달 -->
   <script>
     const userName = '<%= (String) session.getAttribute("userName") %>'; // JSP 세션 변수 -> JavaScript 변수로 전달
 
     function addToCart() {
       if (!userName || userName === 'null') {
-        // 로그인이 되어 있지 않으면 로그인 배너 표시
-        document.getElementById('bannerMessage').innerText = "로그인이 필요합니다!";
-        document.getElementById('confirmButton').onclick = redirectToLogin;
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('confirmBanner').style.display = 'block';
+        showBanner("로그인이 필요합니다!", redirectToLogin);
       } else {
-        // 로그인이 되어 있으면 장바구니로 이동
         window.location.href = 'cart.jsp';
       }
     }
 
     function checkLogin() {
       if (!userName || userName === 'null') {
-        // 로그인이 되어 있지 않으면 로그인 배너 표시
-        document.getElementById('bannerMessage').innerText = "로그인이 필요합니다!";
-        document.getElementById('confirmButton').onclick = redirectToLogin;
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('confirmBanner').style.display = 'block';
+        showBanner("로그인이 필요합니다!", redirectToLogin);
       } else {
-        // 로그인이 되어 있으면 구매 페이지로 이동
         window.location.href = 'buy.jsp';
       }
+    }
+
+    function showBanner(message, confirmAction) {
+      document.getElementById('bannerMessage').innerText = message;
+      document.getElementById('confirmButton').onclick = confirmAction;
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('confirmBanner').style.display = 'block';
     }
 
     function hideBanner() {
