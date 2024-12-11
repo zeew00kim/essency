@@ -8,12 +8,12 @@ public class CommentDAO {
 	PreparedStatement pstmt = null;
 
 	final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	final String JDBC_URL = "jdbc:mysql://localhost:3306/essency";
+	final String JDBC_URL = "jdbc:mysql://localhost:3306/team_project";
 
 	public void open() {
 		try {
 			Class.forName(JDBC_DRIVER);
-			conn = DriverManager.getConnection(JDBC_URL, "root", "rkdwlgns78?");
+			conn = DriverManager.getConnection(JDBC_URL, "root", "root");
 		} catch (SQLException e) {
 			System.out.println("Database connection failed!");
 			e.printStackTrace();
