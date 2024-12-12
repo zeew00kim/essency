@@ -82,7 +82,6 @@
     <section class="m2">
       <div class="product_image">
         <%
-          // 데이터베이스 연결 설정
           String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
           String dbUser = "root";
           String dbPassword = "root";
@@ -92,11 +91,8 @@
           ResultSet rs = null;
 
           try {
-              // 데이터베이스 연결
               Class.forName("com.mysql.cj.jdbc.Driver");
               conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-
-              // products 테이블에서 product_name이 "ampoule%"로 시작하는 데이터 조회
               String query = "SELECT product_name FROM products WHERE product_name LIKE ?";
               pstmt = conn.prepareStatement(query);
               pstmt.setString(1, "ampoule%");
@@ -105,8 +101,7 @@
               while (rs.next()) {
                   String productName = rs.getString("product_name");
                   String imagePath = request.getContextPath() + "/webservice/image/" + productName + ".jpg";
-
-                  // 이미지 파일을 표시
+                  
         %>
         <div class="product">
           <img src="<%= imagePath %>" alt="<%= productName %>">
@@ -116,7 +111,6 @@
           } catch (Exception e) {
               out.println("<p>에러 발생: " + e.getMessage() + "</p>");
           } finally {
-              // 리소스 정리
               try {
                   if (rs != null) rs.close();
                   if (pstmt != null) pstmt.close();

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -17,15 +18,24 @@
     * {
       box-sizing: inherit;
     }
+
     a {
       text-decoration: none;
       font-weight: bold; 
       color: black;
     }
+
+    a:hover {
+      text-decoration: underline;
+      color: purple !important;
+      transform: scale(1.05);
+    }
+
     .welcome-message {
       color: black;
       font-weight: bold;
     }
+
     .button {
       padding: 10px 20px;
       background-color: #B8D0FA;
@@ -35,10 +45,32 @@
       font-weight: bold;
       border-radius: 5px;
     }
+
     .button:hover {
       background-color: Skyblue;
       color: purple;
       transform: scale(1.05);
+    }
+
+    .product_image {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .product img {
+      width: 300px;
+      height: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
@@ -50,26 +82,51 @@
     <h1 class="m1">클렌징</h1>
     <div class="m2">
       <div class="product_image">
+        <%
+          // 데이터베이스 연결 설정
+          String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
+          String dbUser = "root";
+          String dbPassword = "root";
+
+          Connection conn = null;
+          PreparedStatement pstmt = null;
+          ResultSet rs = null;
+
+          try {
+              // 데이터베이스 연결
+              Class.forName("com.mysql.cj.jdbc.Driver");
+              conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+
+              // products 테이블에서 product_name이 "cleansing%"로 시작하는 데이터 조회
+              String query = "SELECT product_name FROM products WHERE product_name LIKE ?";
+              pstmt = conn.prepareStatement(query);
+              pstmt.setString(1, "cleansing%");
+              rs = pstmt.executeQuery();
+
+              while (rs.next()) {
+                  String productName = rs.getString("product_name");
+                  String imagePath = request.getContextPath() + "/webservice/image/" + productName + ".jpg";
+
+                  // 이미지 파일을 표시
+        %>
         <div class="product">
-          <img src="<%= request.getContextPath() %>/webservice/image/KakaoTalk_20241127_111509868_18.jpg" width="860" height="1075" alt="클렌징 제품 1">
+          <img src="<%= imagePath %>" alt="<%= productName %>">
         </div>
-        <div class="product">
-          <img src="<%= request.getContextPath() %>/webservice/image/KakaoTalk_20241127_111509868_04.jpg" width="858" height="1147" alt="클렌징 제품 2">
-        </div>
-        <div class="product">
-          <img src="<%= request.getContextPath() %>/webservice/image/클렌저.jpg" width="1000" height="1000" alt="클렌저 1">
-        </div>
-        <div class="product">
-          <img src="<%= request.getContextPath() %>/webservice/image/클렌저2.jpg" width="1000" height="1000" alt="클렌저 2">
-        </div>
-        <div class="product">
-          <img src="<%= request.getContextPath() %>/webservice/image/KakaoTalk_20241128_194419059_05.jpg" width="481" height="510" alt="클렌징 제품 3">
-        </div>
-        <div class="product">
-          <a href="itemdetail.jsp">
-            <img src="<%= request.getContextPath() %>/webservice/image/KakaoTalk_20241127_111509868_02.jpg" alt="Product 2">
-          </a>
-        </div>
+        <%
+              }
+          } catch (Exception e) {
+              out.println("<p>에러 발생: " + e.getMessage() + "</p>");
+          } finally {
+              // 리소스 정리
+              try {
+                  if (rs != null) rs.close();
+                  if (pstmt != null) pstmt.close();
+                  if (conn != null) conn.close();
+              } catch (SQLException e) {
+                  e.printStackTrace();
+              }
+          }
+        %>
       </div>
     </div>
   </div>
