@@ -51,7 +51,7 @@
     <div class="m2">
       <div class="product_image">
         <div class="product">
-          <img src="<%= request.getContextPath() %>/webservice/image/KakaoTalk_20241127_111509868_16.jpg" width="859" height="1076" alt="Product 1">
+          <img src="<%= request.getContextPath() %>/webservice/image/lotion_1.jsp" width="859" height="1076" alt="Product 1">
         </div>
         <div class="product">
           <img src="<%= request.getContextPath() %>/webservice/image/KakaoTalk_20241128_194419059_15.jpg" width="525" height="700" alt="Product 3">
