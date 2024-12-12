@@ -9,6 +9,7 @@
 	.footer {
 		background-color: #B8D0FA;
 		color: #2c3e50;
+		
 	}
 </style>
 </head>

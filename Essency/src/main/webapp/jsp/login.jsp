@@ -47,7 +47,7 @@
       color: purple !important;
       text-decoration: underline;
     }
-    .mb-3 {
+    .mb-3 { 
     	font-weight: bold;
     	color: #2c3e50; 
     }
