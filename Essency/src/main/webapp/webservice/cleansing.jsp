@@ -60,6 +60,10 @@
       align-items: center;
     }
 
+    .product {
+      text-align: center;
+    }
+
     .product img {
       width: 300px;
       height: 300px;
@@ -75,12 +79,11 @@
   </style>
 </head>
 <body>
-  <!-- header.jsp 포함 -->
   <%@ include file="header.jsp" %>
 
   <div class="main">
     <h1 class="m1">클렌징</h1>
-    <div class="m2">
+    <section class="m2">
       <div class="product_image">
         <%
           // 데이터베이스 연결 설정
@@ -97,20 +100,22 @@
               Class.forName("com.mysql.cj.jdbc.Driver");
               conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
 
-              // products 테이블에서 product_name이 "cleansing%"로 시작하는 데이터 조회
-              String query = "SELECT product_name FROM products WHERE product_name LIKE ?";
+              // 클렌징 제품 정보 조회
+              String query = "SELECT product_id, product_name FROM products WHERE product_name LIKE ?";
               pstmt = conn.prepareStatement(query);
               pstmt.setString(1, "cleansing%");
               rs = pstmt.executeQuery();
 
               while (rs.next()) {
+                  int productId = rs.getInt("product_id");
                   String productName = rs.getString("product_name");
                   String imagePath = request.getContextPath() + "/webservice/image/" + productName + ".jpg";
-
-                  // 이미지 파일을 표시
         %>
         <div class="product">
-          <img src="<%= imagePath %>" alt="<%= productName %>">
+          <!-- 상품 이미지를 클릭하면 itemdetail.jsp로 이동 -->
+          <a href="<%= request.getContextPath() %>/webservice/itemdetail.jsp?productId=<%= productId %>">
+            <img src="<%= imagePath %>" alt="<%= productName %>">
+          </a>
         </div>
         <%
               }
@@ -128,17 +133,9 @@
           }
         %>
       </div>
-    </div>
+    </section>
   </div>
 
-  <!-- footer.jsp 포함 -->
   <%@ include file="footer.jsp" %>
-
-  <% 
-    if (request.getParameter("logout") != null) {
-        session.invalidate();
-        response.sendRedirect("cleansing.jsp");
-    }
-  %>
 </body>
 </html>

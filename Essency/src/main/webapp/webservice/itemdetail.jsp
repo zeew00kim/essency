@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,7 +7,6 @@
   <title>제품 상세 페이지</title>
   <link href="layout1.css" rel="stylesheet" type="text/css">
   <style>
-    /* 글로벌 스타일 */
     html, body {
       margin: 0;
       padding: 0;
@@ -17,8 +17,6 @@
     * {
       box-sizing: inherit;
     }
-
-    /* 공통 스타일 */
     a {
       text-decoration: none;
       font-weight: bold;
@@ -48,7 +46,7 @@
       font-weight: bold;
       font-size: 1.5em;
     }
-    .product-price, .shipping-fee {
+    .product-price, .shipping-fee, .total-price {
       font-size: 1.2em;
       margin-top: 10px;
       display: block;
@@ -58,6 +56,12 @@
       display: flex;
       gap: 10px;
     }
+    .product-image img {
+      width: 300px;
+      height: 400px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
     .main_footer img {
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -65,57 +69,6 @@
       height: auto;
       display: block;
       margin: 5px auto;
-    }
-
-    /* 배너 스타일 */
-    .confirm-banner {
-      display: none;
-      position: fixed;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: white;
-      border: 2px solid #b8d0fa;
-      border-radius: 10px;
-      padding: 20px;
-      width: 300px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-    }
-    .confirm-banner button {
-      margin: 10px;
-      padding: 10px 20px;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .confirm-banner .confirm {
-      background-color: #b8d0fa;
-      color: black;
-    }
-    .confirm-banner .confirm:hover {
-      background-color: skyblue;
-      color: purple;
-    }
-    .confirm-banner .cancel {
-      background-color: #ccc;
-      color: black;
-    }
-    .confirm-banner .cancel:hover {
-      background-color: #999;
-      color: purple;
-    }
-    .overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 999;
     }
   </style>
 </head>
@@ -125,15 +78,56 @@
 
     <main class="main">
       <section class="m2">
-        <div class="m2_left">
-          <img src="../webservice/image/KakaoTalk_20241127_111509868_02.jpg" alt="제품 이미지" width="300" height="400">
+        <div class="product-image">
+          <%
+            // 상품 ID를 URL에서 가져옴
+            String productId = request.getParameter("productId");
+
+            // 데이터베이스 연결 설정
+            String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
+            String dbUser = "root";
+            String dbPassword = "root";
+
+            Connection conn = null;
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
+
+            String productName = "";
+            int salePrice = 0;
+            int shippingCharge = 0;
+            String imagePath = "";
+
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+
+                // 상품 정보 조회
+                String query = "SELECT product_name, sale_price, shipping_charge FROM products WHERE product_id = ?";
+                pstmt = conn.prepareStatement(query);
+                pstmt.setString(1, productId);
+                rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    productName = rs.getString("product_name");
+                    salePrice = rs.getInt("sale_price");
+                    shippingCharge = rs.getInt("shipping_charge");
+                    imagePath = request.getContextPath() + "/webservice/image/" + productName + ".jpg";
+                }
+            } catch (Exception e) {
+                out.println("<p>에러 발생: " + e.getMessage() + "</p>");
+            } finally {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            }
+          %>
+          <img src="<%= imagePath %>" alt="<%= productName %>">
         </div>
-        <div class="m2_right">
-          <span class="product-name">제품명</span>
-          <span class="product-price">판매 가격 15,000원</span>
-          <span class="shipping-fee">배송비 2,500원</span>
-          <span class="shipping-fee">배송일 결제 후 7일 이내 도착예정</span>
-          <span class="shipping-fee">배송/출고 cj대한통운(오네)</span>
+        <div class="product-info" style="margin-left: 50px;">
+          <span class="product-name"><%= productName %></span>
+          <span class="product-price">판매 가격 : <%= salePrice %>원</span>
+          <span class="shipping-fee">배송비 : <%= shippingCharge %>원</span>
+          <span class="total-price">결제 총액 : <%= salePrice + shippingCharge %>원</span>
           <div class="buttons">
             <button class="button" onclick="addToCart()">장바구니에 담기</button>
             <button class="button" onclick="checkLogin()">구매하기</button>
@@ -159,19 +153,13 @@
     <%@ include file="footer.jsp" %>
   </div>
 
-  <div class="overlay" id="overlay"></div>
-  <div class="confirm-banner" id="confirmBanner">
-    <p id="bannerMessage">로그인이 필요합니다!</p>
-    <button class="confirm" id="confirmButton">확인</button>
-    <button class="cancel" onclick="hideBanner()">취소</button>
-  </div>
-
   <script>
-    const userName = '<%= (String) session.getAttribute("userName") %>'; // JSP 세션 변수 -> JavaScript 변수로 전달
+    const userName = '<%= (String) session.getAttribute("userName") %>';
 
     function addToCart() {
       if (!userName || userName === 'null') {
-        showBanner("로그인이 필요합니다!", redirectToLogin);
+        alert("로그인이 필요합니다!");
+        window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
       } else {
         window.location.href = 'cart.jsp';
       }
@@ -179,34 +167,12 @@
 
     function checkLogin() {
       if (!userName || userName === 'null') {
-        showBanner("로그인이 필요합니다!", redirectToLogin);
+        alert("로그인이 필요합니다!");
+        window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
       } else {
         window.location.href = 'buy.jsp';
       }
     }
-
-    function showBanner(message, confirmAction) {
-      document.getElementById('bannerMessage').innerText = message;
-      document.getElementById('confirmButton').onclick = confirmAction;
-      document.getElementById('overlay').style.display = 'block';
-      document.getElementById('confirmBanner').style.display = 'block';
-    }
-
-    function hideBanner() {
-      document.getElementById('overlay').style.display = 'none';
-      document.getElementById('confirmBanner').style.display = 'none';
-    }
-
-    function redirectToLogin() {
-      window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
-    }
   </script>
-
-  <% 
-    if (request.getParameter("logout") != null) {
-        session.invalidate();  
-        response.sendRedirect("cleansing.jsp");
-    }
-  %>
 </body>
 </html>
