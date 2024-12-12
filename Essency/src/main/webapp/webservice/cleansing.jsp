@@ -62,6 +62,7 @@
 
     .product {
       text-align: center;
+      margin: 10px;
     }
 
     .product img {
@@ -76,6 +77,19 @@
       transform: scale(1.05);
       box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
     }
+
+    .product a {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .product a:hover {
+      color: purple;
+    }
   </style>
 </head>
 <body>
@@ -86,7 +100,6 @@
     <section class="m2">
       <div class="product_image">
         <%
-          // 데이터베이스 연결 설정
           String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
           String dbUser = "root";
           String dbPassword = "root";
@@ -96,11 +109,8 @@
           ResultSet rs = null;
 
           try {
-              // 데이터베이스 연결
               Class.forName("com.mysql.cj.jdbc.Driver");
               conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-
-              // 클렌징 제품 정보 조회
               String query = "SELECT product_id, product_name FROM products WHERE product_name LIKE ?";
               pstmt = conn.prepareStatement(query);
               pstmt.setString(1, "cleansing%");
@@ -112,9 +122,9 @@
                   String imagePath = request.getContextPath() + "/webservice/image/" + productName + ".jpg";
         %>
         <div class="product">
-          <!-- 상품 이미지를 클릭하면 itemdetail.jsp로 이동 -->
           <a href="<%= request.getContextPath() %>/webservice/itemdetail.jsp?productId=<%= productId %>">
             <img src="<%= imagePath %>" alt="<%= productName %>">
+            <span><%= productName %></span>
           </a>
         </div>
         <%
@@ -122,7 +132,6 @@
           } catch (Exception e) {
               out.println("<p>에러 발생: " + e.getMessage() + "</p>");
           } finally {
-              // 리소스 정리
               try {
                   if (rs != null) rs.close();
                   if (pstmt != null) pstmt.close();
