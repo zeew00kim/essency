@@ -71,12 +71,14 @@ a:hover {
 			<p class="welcome-message"><%= loggedInUser.getUsername() %>님
 				반갑습니다 😊
 			</p>
-			<form action="cart.jsp" method="get" style="display: inline;">
-            	<button type="submit" class="button">장바구니</button>
-         	</form>
-			<form action="index.jsp" method="post">
-				<button type="submit" name="logout" class="button" style="color: #2c3e50">로그아웃</button>
+			<form action="index.jsp" method="post" style="float: right;">
+    			<button type="submit" name="logout" class="button">로그아웃</button>
 			</form>
+			<form action="cart.jsp" method="get" style="float: right; margin-right: 10px;">
+    			<button type="submit" class="button">장바구니</button>
+			</form>
+			<div style="clear: both;"></div> <!-- float 해제 -->
+
 			<% } else { %>
 			<!-- 로그인하지 않은 경우 -->
 			<a href="/Essency/jsp/signUp.jsp" class="button" style="color: #2c3e50">회원가입</a> <a

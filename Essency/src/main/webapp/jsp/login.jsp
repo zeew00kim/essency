@@ -14,7 +14,7 @@
       background: url('<%= request.getContextPath() %>/webservice/image/login-bg.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Roboto', sans-serif;
-    }
+    } 
     .card {
       background-color: rgba(255, 255, 255, 0.9); /* 카드 배경을 약간 투명하게 */
       border-radius: 15px;
@@ -35,7 +35,7 @@
       border: none;
       color: #2c3e50;
       font-weight: bold;
-    }
+    } 
     .btn-primary:hover {
       background-color: skyblue;
       color: purple;
@@ -98,10 +98,22 @@
     </div>
   </div>
 
+  <% 
+    // 추가 로직: POST 요청 처리 후 관리자 계정 확인
+    if ("POST".equalsIgnoreCase(request.getMethod())) {
+      String username = request.getParameter("username");
+      String password = request.getParameter("password");
+
+      if ("admin".equals(username) && "admin".equals(password)) {
+        // 관리자 페이지로 리다이렉트
+        response.sendRedirect(request.getContextPath() + "/jsp/adminPage.jsp");
+      }
+    }
+  %>
+
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
- <%@ include file="footer.jsp" %>
- 
+<%@ include file="footer.jsp" %>
 </html>
