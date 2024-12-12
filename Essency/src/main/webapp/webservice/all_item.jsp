@@ -18,20 +18,24 @@
     * {
       box-sizing: inherit;
     }
+
     a {
       text-decoration: none;
       font-weight: bold; 
       color: black;
     }
+
     a:hover {
       text-decoration: underline;
       color: purple !important;
       transform: scale(1.05);
     }
+
     .welcome-message {
       color: black;
       font-weight: bold;
     }
+
     .button {
       padding: 10px 20px;
       background-color: #B8D0FA;
@@ -41,18 +45,27 @@
       font-weight: bold;
       border-radius: 5px;
     }
+
     .button:hover {
       background-color: Skyblue;
       color: purple;
       transform: scale(1.05);
     }
+
     .product_image {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 30px; 
       justify-content: center;
       align-items: center;
+      margin: 20px; 
     }
+
+    .product {
+      text-align: center;
+      margin: 0 45px;
+    }
+
     .product img {
       width: 300px;
       height: 300px;
@@ -60,17 +73,30 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
     .product img:hover {
       transform: scale(1.05);
       box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
     }
+
+    .product a {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .product a:hover {
+      color: purple;
+    }
   </style>
 </head>
 <body>
-  <!-- Header Include -->
   <%@ include file="header.jsp" %>
 
-  <main class="main">
+  <div class="main">
     <h1 class="m1">전체상품</h1>
     <section class="m2">
       <div class="product_image">
@@ -81,37 +107,39 @@
           String dbPassword = "root";
 
           Connection conn = null;
-          Statement stmt = null;
+          PreparedStatement pstmt = null;
           ResultSet rs = null;
 
           try {
               // 데이터베이스 연결
               Class.forName("com.mysql.cj.jdbc.Driver");
               conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-              stmt = conn.createStatement();
 
-              // 모든 상품 데이터 조회
-              String query = "SELECT product_name FROM products";
-              rs = stmt.executeQuery(query);
+              // 모든 상품 정보 조회
+              String query = "SELECT product_id, product_name FROM products";
+              pstmt = conn.prepareStatement(query);
+              rs = pstmt.executeQuery();
 
               while (rs.next()) {
+                  int productId = rs.getInt("product_id");
                   String productName = rs.getString("product_name");
                   String imagePath = request.getContextPath() + "/webservice/image/" + productName + ".jpg";
-
-                  // 이미지 파일 표시
         %>
         <div class="product">
-          <img src="<%= imagePath %>" alt="<%= productName %>">
+          <a href="<%= request.getContextPath() %>/webservice/itemdetail.jsp?productId=<%= productId %>">
+            <img src="<%= imagePath %>" alt="<%= productName %>">
+            <br>
+            <span><%= productName %></span>
+          </a>
         </div>
         <%
               }
           } catch (Exception e) {
               out.println("<p>에러 발생: " + e.getMessage() + "</p>");
           } finally {
-              // 리소스 정리
               try {
                   if (rs != null) rs.close();
-                  if (stmt != null) stmt.close();
+                  if (pstmt != null) pstmt.close();
                   if (conn != null) conn.close();
               } catch (SQLException e) {
                   e.printStackTrace();
@@ -120,17 +148,8 @@
         %>
       </div>
     </section>
-  </main>
+  </div>
 
-  <!-- Footer Include -->
   <%@ include file="footer.jsp" %>
-
-  <% 
-    // 로그아웃 처리
-    if (request.getParameter("logout") != null) {
-        session.invalidate();
-        response.sendRedirect("all_item.jsp");  
-    }
-  %>
 </body>
 </html>
