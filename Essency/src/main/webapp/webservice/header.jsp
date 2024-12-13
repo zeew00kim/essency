@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="Essency.User"%>
 
-
-
 <!DOCTYPE html>
 <html>
 <head>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
+<%@ page import="Essency.User, java.sql.*" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -76,6 +76,12 @@
   <div class="wrap">
     <%@ include file="header.jsp" %>
 
+    <% 
+    // 새로운 변수 이름으로 수정
+    User currentUser = (User) session.getAttribute("loggedInUser");
+    String userName = (currentUser != null) ? currentUser.getUsername() : "null";
+	%>
+	
     <main class="main">
       <section class="m2">
         <div class="product-image">
@@ -154,10 +160,10 @@
   </div>
 
   <script>
-    const userName = '<%= (String) session.getAttribute("userName") %>';
+    const userName = '<%= userName %>'; // 서버에서 전달된 세션 값 사용
 
     function addToCart() {
-      if (!userName || userName === 'null') {
+      if (userName === 'null') {
         alert("로그인이 필요합니다!");
         window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
       } else {
@@ -166,7 +172,7 @@
     }
 
     function checkLogin() {
-      if (!userName || userName === 'null') {
+      if (userName === 'null') {
         alert("로그인이 필요합니다!");
         window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
       } else {
