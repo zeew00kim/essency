@@ -18,7 +18,7 @@
       background-size: cover;
       font-family: 'Roboto', sans-serif;
     }
-    .card {
+    .card { 
       background-color: rgba(255, 255, 255, 0.9); /* 카드 배경을 약간 투명하게 */
       border-radius: 15px;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -114,8 +114,8 @@
 						<label for="phone" class="form-label">핸드폰 번호</label> <input
 							type="tel" class="form-control" id="phone"
 							name="phone" placeholder="핸드폰 번호를 입력하세요"
-							pattern="\d{10,11}" required> <small
-							class="form-text text-muted">'-' 제외하고 입력
+							pattern="\d{10,11}" required> 
+							<small class="form-text text-muted">'-' 제외하고 입력
 					</div>
 
 

@@ -62,10 +62,7 @@
           <form action="/Essency/webservice/index.jsp" method="post">
             <button type="submit" name="logout" class="button" style="color: #2c3e50">로그아웃</button>
           </form>
-        <% } else { %>
-          <!-- 로그인하지 않은 경우 -->
-          <a href="/Essency/jsp/signUp.jsp" class="button" style="color: #2c3e50">회원가입</a>
-          <a href="/Essency/jsp/login.jsp" class="button" style="color: #2c3e50">로그인</a>
+       	  <a href="/Essency/jsp/login.jsp" class="button" style="color: #2c3e50">로그인</a>
         <% } %>
       </div>
       <div class="h2">
