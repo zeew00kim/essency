@@ -84,6 +84,14 @@
       font-weight: bold;
     }
 
+    .product-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 5px;
+    }
+
     .total-section {
       text-align: right;
       margin-right: 10%;
@@ -103,7 +111,7 @@
     <table class="cart-table">
       <thead>
         <tr>
-          <th>제품명</th>
+          <th>제품</th>
           <th>수량</th>
           <th>판매 가격</th>
           <th>배송비</th>
@@ -154,8 +162,10 @@
                       %>
                       <tr>
                           <td>
-                            <!-- 제품명 클릭 시 itemdetail.jsp로 이동 -->
                             <a href="<%= request.getContextPath() %>/webservice/itemdetail.jsp?productId=<%= productId %>">
+                              <!-- 제품 이미지 -->
+                              <img src="<%= request.getContextPath() %>/webservice/image/<%= productName %>.jpg" 
+                                   alt="<%= productName %>" class="product-img" style="margin-bottom: -5px;"><br>
                               <%= productName %>
                             </a>
                           </td>

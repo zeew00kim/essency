@@ -135,14 +135,13 @@
           <span class="shipping-fee">배송비 : <%= shippingCharge %>원</span>
           <span class="total-price">결제 총액 : <%= salePrice + shippingCharge %>원</span>
           <div class="buttons">
-  <form action="addToCart.jsp" method="post" onsubmit="return showBanner()">
-    <input type="hidden" name="productId" value="<%= productId %>">
-    <input type="hidden" name="quantity" value="1"> <!-- 기본 수량 설정 -->
-    <button type="submit" class="button">장바구니에 담기</button>
-  </form>
-  <button class="button" onclick="checkLogin()">구매하기</button>
-</div>
-
+            <form action="addToCart.jsp" method="post" onsubmit="return showBanner()">
+              <input type="hidden" name="productId" value="<%= productId %>">
+              <input type="hidden" name="quantity" value="1"> <!-- 기본 수량 설정 -->
+              <button type="submit" class="button">장바구니에 담기</button>
+            </form>
+            <button class="button" onclick="checkLogin()">구매하기</button>
+          </div>
         </div>
       </section>
       <div class="main_footer">
@@ -168,6 +167,11 @@
     const userName = '<%= userName %>'; // 서버에서 전달된 세션 값 사용
 
     function showBanner() {
+      if (userName === 'null') {
+        alert("로그인이 필요합니다!");
+        window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
+        return false;
+      }
       return confirm("장바구니에 추가하시겠습니까?");
     }
 
