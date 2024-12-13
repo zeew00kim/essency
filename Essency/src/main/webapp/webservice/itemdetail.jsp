@@ -140,7 +140,7 @@
               <input type="hidden" name="quantity" value="1"> <!-- 기본 수량 설정 -->
               <button type="submit" class="button">장바구니에 담기</button>
             </form>
-            <button class="button" onclick="checkLogin()">구매하기</button>
+            <button class="button" onclick="confirmPurchase()">구매하기</button>
           </div>
         </div>
       </section>
@@ -159,8 +159,6 @@
         </div>
       </div>
     </main>
-
-    <%@ include file="footer.jsp" %>
   </div>
 
   <script>
@@ -175,14 +173,17 @@
       return confirm("장바구니에 추가하시겠습니까?");
     }
 
-    function checkLogin() {
-      if (userName === 'null') {
-        alert("로그인이 필요합니다!");
-        window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
-      } else {
-        window.location.href = 'buy.jsp';
-      }
-    }
+    function confirmPurchase() {
+    	  if (userName === 'null') {
+    	    alert("로그인이 필요합니다!");
+    	    window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
+    	    return;
+    	  }
+    	  if (confirm("구매를 진행하시겠습니까?")) {
+    	    alert("구매가 완료되었습니다. 감사합니다 😁");
+    	    window.location.href = '<%= request.getContextPath() %>/webservice/index.jsp'; // 수정된 경로
+    	  }
+    	}
   </script>
 </body>
 </html>
