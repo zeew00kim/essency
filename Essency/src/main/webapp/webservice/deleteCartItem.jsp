@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, Essency.User" %>
+
 <%
+  int productId = Integer.parseInt(request.getParameter("product_id"));
   User currentUser = (User) session.getAttribute("loggedInUser");
 
   if (currentUser == null) {
@@ -9,12 +11,9 @@
   }
 
   String username = currentUser.getUsername();
-  String productId = request.getParameter("productId");
-  int quantity = Integer.parseInt(request.getParameter("quantity"));
 
   Connection conn = null;
   PreparedStatement pstmt = null;
-  ResultSet rs = null;
 
   try {
       Class.forName("com.mysql.cj.jdbc.Driver");
@@ -23,38 +22,34 @@
       String dbPassword = "root";
       conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
 
-      // `users` 테이블에서 user_id 가져오기
+      // 사용자 ID 가져오기
       String userQuery = "SELECT user_id FROM users WHERE username = ?";
       pstmt = conn.prepareStatement(userQuery);
       pstmt.setString(1, username);
-      rs = pstmt.executeQuery();
-
+      ResultSet userRs = pstmt.executeQuery();
       int userId = 0;
-      if (rs.next()) {
-          userId = rs.getInt("user_id");
-      } else {
-          out.println("<p>사용자 정보를 찾을 수 없습니다.</p>");
-          return;
+
+      if (userRs.next()) {
+          userId = userRs.getInt("user_id");
       }
 
-      // `cart` 테이블에 데이터 삽입
-      String insertQuery = "INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)";
-      pstmt = conn.prepareStatement(insertQuery);
+      // cart 테이블에서 항목 삭제
+      String deleteQuery = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
+      pstmt = conn.prepareStatement(deleteQuery);
       pstmt.setInt(1, userId);
-      pstmt.setString(2, productId);
-      pstmt.setInt(3, quantity);
+      pstmt.setInt(2, productId);
 
-      int rows = pstmt.executeUpdate();
-      if (rows > 0) {
-          out.println("<p>장바구니에 상품이 추가되었습니다.</p>");
-          response.sendRedirect("cart.jsp");
+      int rowsAffected = pstmt.executeUpdate();
+
+      if (rowsAffected > 0) {
+          out.println("<script>alert('상품이 성공적으로 삭제되었습니다.'); location.href='cart.jsp';</script>");
       } else {
-          out.println("<p>장바구니 추가 실패</p>");
+          out.println("<script>alert('상품 삭제에 실패하였습니다.'); location.href='cart.jsp';</script>");
       }
+
   } catch (Exception e) {
-      out.println("<p>에러 발생: " + e.getMessage() + "</p>");
+      out.println("<script>alert('오류가 발생했습니다: " + e.getMessage() + "'); location.href='cart.jsp';</script>");
   } finally {
-      if (rs != null) rs.close();
       if (pstmt != null) pstmt.close();
       if (conn != null) conn.close();
   }

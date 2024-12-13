@@ -48,6 +48,23 @@
       transform: scale(1.05);
     }
 
+    .delete-btn {
+      padding: 8px 12px;
+      background-color: silver;
+      border: none;
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: #f05252;
+      color: purple;
+      transform: scale(1.05);
+    }
+
     .cart-table {
       width: 80%;
       margin: 20px auto;
@@ -65,11 +82,6 @@
     .cart-table th {
       background-color: #B8D0FA;
       font-weight: bold;
-    }
-
-    .cart-item img {
-      width: 100px;
-      height: auto;
     }
 
     .total-section {
@@ -96,6 +108,7 @@
           <th>판매 가격</th>
           <th>배송비</th>
           <th>총 가격</th>
+          <th>삭제</th>
         </tr>
       </thead>
       <tbody>
@@ -117,7 +130,7 @@
                   conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
 
                   // cart와 products 테이블을 조인하여 데이터 가져오기
-                  String query = "SELECT p.product_name, c.quantity, p.sale_price, p.shipping_charge " +
+                  String query = "SELECT p.product_name, c.quantity, p.sale_price, p.shipping_charge, c.product_id " +
                                  "FROM cart c " +
                                  "JOIN products p ON c.product_id = p.product_id " +
                                  "WHERE c.user_id = (SELECT user_id FROM users WHERE username = ?)";
@@ -133,6 +146,7 @@
                       int quantity = rs.getInt("quantity");
                       int salePrice = rs.getInt("sale_price");
                       int shippingCharge = rs.getInt("shipping_charge");
+                      int productId = rs.getInt("product_id");
                       int total = (salePrice * quantity) + shippingCharge;
 
                       totalPrice += total;
@@ -144,6 +158,13 @@
                           <td><%= salePrice %>원</td>
                           <td><%= shippingCharge %>원</td>
                           <td><%= total %>원</td>
+                          <td>
+                            <!-- 삭제 버튼 -->
+                            <form action="deleteCartItem.jsp" method="POST" style="display:inline;" onsubmit="return confirm('해당 제품을 삭제하시겠습니까?')">
+                              <input type="hidden" name="product_id" value="<%= productId %>">
+                              <button type="submit" class="delete-btn">삭제</button>
+                            </form>
+                          </td>
                       </tr>
                       <%
                   }
@@ -151,7 +172,7 @@
                   if (!hasItems) {
                       %>
                       <tr>
-                          <td colspan="5">장바구니가 비어 있습니다.</td>
+                          <td colspan="6">장바구니가 비어 있습니다.</td>
                       </tr>
                       <%
                   }
@@ -165,7 +186,7 @@
           } else {
               %>
               <tr>
-                  <td colspan="5">로그인이 필요합니다.</td>
+                  <td colspan="6">로그인이 필요합니다.</td>
               </tr>
               <%
           }
@@ -182,14 +203,5 @@
 
   <!-- Footer 포함 -->
   <%@ include file="footer.jsp" %>
-
-  <script>
-    function deleteItem(productName) {
-      if (confirm(productName + "을(를) 삭제하시겠습니까?")) {
-        // 실제 삭제 요청 구현 (Ajax 또는 form 제출 방식 사용 가능)
-        alert(productName + "이(가) 삭제되었습니다.");
-      }
-    }
-  </script>
 </body>
 </html>
