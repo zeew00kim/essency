@@ -153,7 +153,12 @@
 
                       %>
                       <tr>
-                          <td><%= productName %></td>
+                          <td>
+                            <!-- 제품명 클릭 시 itemdetail.jsp로 이동 -->
+                            <a href="<%= request.getContextPath() %>/webservice/itemdetail.jsp?productId=<%= productId %>">
+                              <%= productName %>
+                            </a>
+                          </td>
                           <td><%= quantity %></td>
                           <td><%= salePrice %>원</td>
                           <td><%= shippingCharge %>원</td>

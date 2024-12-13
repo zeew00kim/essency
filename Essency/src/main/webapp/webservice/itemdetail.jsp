@@ -168,7 +168,7 @@
     const userName = '<%= userName %>'; // 서버에서 전달된 세션 값 사용
 
     function showBanner() {
-      return confirm("장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?");
+      return confirm("장바구니에 추가하시겠습니까?");
     }
 
     function checkLogin() {
