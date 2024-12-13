@@ -135,9 +135,14 @@
           <span class="shipping-fee">배송비 : <%= shippingCharge %>원</span>
           <span class="total-price">결제 총액 : <%= salePrice + shippingCharge %>원</span>
           <div class="buttons">
-            <button class="button" onclick="addToCart()">장바구니에 담기</button>
-            <button class="button" onclick="checkLogin()">구매하기</button>
-          </div>
+  <form action="addToCart.jsp" method="post">
+    <input type="hidden" name="productId" value="<%= productId %>">
+    <input type="hidden" name="quantity" value="1"> <!-- 기본 수량 설정 -->
+    <button type="submit" class="button">장바구니에 담기</button>
+  </form>
+  <button class="button" onclick="checkLogin()">구매하기</button>
+</div>
+
         </div>
       </section>
       <div class="main_footer">

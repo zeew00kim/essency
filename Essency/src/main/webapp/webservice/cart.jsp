@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, Essency.User" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -30,11 +31,6 @@
       transform: scale(1.05);
     }
 
-    .welcome-message {
-      color: black;
-      font-weight: bold;
-    }
-
     .button {
       padding: 10px 20px;
       background-color: #B8D0FA;
@@ -43,6 +39,7 @@
       color: black;
       font-weight: bold;
       border-radius: 5px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
     }
 
     .button:hover {
@@ -68,7 +65,6 @@
     .cart-table th {
       background-color: #B8D0FA;
       font-weight: bold;
-      border: solid silver 2px;
     }
 
     .cart-item img {
@@ -91,71 +87,109 @@
 
   <main class="main">
     <h1 class="m1">장바구니</h1>
+
     <table class="cart-table">
       <thead>
         <tr>
-          <th>이미지</th>
           <th>제품명</th>
-          <th>가격</th>
           <th>수량</th>
-          <th>합계</th>
-          <th>삭제</th>
+          <th>판매 가격</th>
+          <th>배송비</th>
+          <th>총 가격</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="cart-item">
-            <img src="../webservice/image/KakaoTalk_20241128_194419059_16.jpg" alt="제품 1">
-          </td>
-          <td>샘플 제품 1</td>
-          <td>15000원</td>
-          <td>2</td>
-          <td>30000원</td>
-          <td>
-            <button type="button" class="button"><span style="font-size: 16px;">제품 삭제</span></button>
-          </td>
-        </tr>
-        <tr>
-          <td class="cart-item">
-            <img src="../webservice/image/KakaoTalk_20241128_194419059_08.jpg" alt="제품 2">
-          </td>
-          <td>샘플 제품 2</td>
-          <td>20000원</td>
-          <td>1</td>
-          <td>20000원</td>
-          <td>
-            <button type="button" class="button"><span style="font-size: 16px;">제품 삭제</span></button>
-          </td>
-        </tr>
-        <tr>
-          <td class="cart-item">
-            <img src="../webservice/image/KakaoTalk_20241128_194419059_15.jpg" alt="제품 3">
-          </td>
-          <td>샘플 제품 3</td>
-          <td>10000원</td>
-          <td>3</td>
-          <td>30000원</td>
-          <td>
-            <button type="button" class="button"><span style="font-size: 16px;">제품 삭제</span></button>
-          </td>
-        </tr>
+        <%
+          User currentUser = (User) session.getAttribute("loggedInUser");
+          int totalPrice = 0; // 총 결제 금액
+
+          if (currentUser != null) {
+              String username = currentUser.getUsername(); // 사용자 이름으로 식별
+              Connection conn = null;
+              PreparedStatement pstmt = null;
+              ResultSet rs = null;
+
+              try {
+                  Class.forName("com.mysql.cj.jdbc.Driver");
+                  String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
+                  String dbUser = "root";
+                  String dbPassword = "root";
+                  conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+
+                  // cart와 products 테이블을 조인하여 데이터 가져오기
+                  String query = "SELECT p.product_name, c.quantity, p.sale_price, p.shipping_charge " +
+                                 "FROM cart c " +
+                                 "JOIN products p ON c.product_id = p.product_id " +
+                                 "WHERE c.user_id = (SELECT user_id FROM users WHERE username = ?)";
+                  pstmt = conn.prepareStatement(query);
+                  pstmt.setString(1, username);
+                  rs = pstmt.executeQuery();
+
+                  boolean hasItems = false;
+
+                  while (rs.next()) {
+                      hasItems = true;
+                      String productName = rs.getString("product_name");
+                      int quantity = rs.getInt("quantity");
+                      int salePrice = rs.getInt("sale_price");
+                      int shippingCharge = rs.getInt("shipping_charge");
+                      int total = (salePrice * quantity) + shippingCharge;
+
+                      totalPrice += total;
+
+                      %>
+                      <tr>
+                          <td><%= productName %></td>
+                          <td><%= quantity %></td>
+                          <td><%= salePrice %>원</td>
+                          <td><%= shippingCharge %>원</td>
+                          <td><%= total %>원</td>
+                      </tr>
+                      <%
+                  }
+
+                  if (!hasItems) {
+                      %>
+                      <tr>
+                          <td colspan="5">장바구니가 비어 있습니다.</td>
+                      </tr>
+                      <%
+                  }
+              } catch (Exception e) {
+                  out.println("<p>에러 발생: " + e.getMessage() + "</p>");
+              } finally {
+                  if (rs != null) rs.close();
+                  if (pstmt != null) pstmt.close();
+                  if (conn != null) conn.close();
+              }
+          } else {
+              %>
+              <tr>
+                  <td colspan="5">로그인이 필요합니다.</td>
+              </tr>
+              <%
+          }
+        %>
       </tbody>
     </table>
 
+    <% if (currentUser != null) { %>
     <div class="total-section">
-      총 결제 금액: 80000원
+      총 결제 금액: <%= totalPrice %>원
     </div>
+    <% } %>
   </main>
 
   <!-- Footer 포함 -->
   <%@ include file="footer.jsp" %>
 
-  <% 
-    // 로그아웃 처리
-    if (request.getParameter("logout") != null) {
-        session.invalidate();  // 세션 종료
-        response.sendRedirect("index.jsp");  // 로그아웃 후 index.html로 리다이렉트
+  <script>
+    function deleteItem(productName) {
+      if (confirm(productName + "을(를) 삭제하시겠습니까?")) {
+        // 실제 삭제 요청 구현 (Ajax 또는 form 제출 방식 사용 가능)
+        alert(productName + "이(가) 삭제되었습니다.");
+      }
     }
-  %>
+  </script>
 </body>
 </html>

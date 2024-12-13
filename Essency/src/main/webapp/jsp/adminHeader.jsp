@@ -34,6 +34,7 @@
       transform: scale(1.05);
       color: purple;
     }
+    
   </style>
   <script>
     function confirmLogout() {
