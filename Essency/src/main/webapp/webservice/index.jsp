@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="Essency.User"%>
+<%@ page import="Essency.User, java.sql.*" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -31,11 +31,6 @@
       transform: scale(1.05);
     }
 
-    .welcome-message {
-      color: black;
-      font-weight: bold;
-    }
-
     .button {
       padding: 10px 20px;
       background-color: #B8D0FA;
@@ -52,6 +47,45 @@
       transform: scale(1.05);
     }
 
+    .items {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin: 20px;
+    }
+
+    .item {
+      text-align: center;
+      width: 250px;
+    }
+
+    .item img {
+      width: 250px;
+      height: 250px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .item img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .item a {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .item a:hover {
+      text-decoration: none;
+    }
+    
     /* 이미지 스타일 */
     img {
       border-radius: 5px;
@@ -119,36 +153,51 @@
       <section class="best-items">
         <h2>Best Items</h2>
         <div class="items">
-          <div id="icon1">
-            <img src="../webservice/image/free-icon-font-angle-circle-left-7482884.png" width="24" height="24" style="border: none">
-          </div>
+          <%
+            // JDBC 연결 설정
+            String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
+            String dbUser = "root";
+            String dbPassword = "root";
+
+            Connection conn = null;
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
+
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+
+                // products 테이블에서 특정 아이템 가져오기
+                String query = "SELECT product_id, product_name, sale_price FROM products WHERE product_name IN ('lotion_1', 'cream_1', 'cleansing_1', 'ampoule_1')";
+                pstmt = conn.prepareStatement(query);
+                rs = pstmt.executeQuery();
+
+                while (rs.next()) {
+                    int productId = rs.getInt("product_id");
+                    String productName = rs.getString("product_name");
+                    int salePrice = rs.getInt("sale_price");
+                    String imagePath = request.getContextPath() + "/webservice/image/" + productName + ".jpg";
+          %>
           <div class="item">
-            <img src="../webservice/image/KakaoTalk_20241127_111509868_15.jpg" width="250" height="250" alt="UV 썬크림">
-            <p style="font-weight: bold">
-              UV 썬크림<br>15,000원
-            </p>
+            <a href="<%= request.getContextPath() %>/webservice/itemdetail.jsp?productId=<%= productId %>">
+              <img src="<%= imagePath %>" alt="<%= productName %>">
+              <p><%= productName %><br><%= salePrice %>원</p>
+            </a>
           </div>
-          <div class="item">
-            <img src="../webservice/image/KakaoTalk_20241127_111509868_01.jpg" width="250" height="250" alt="수분크림">
-            <p style="font-weight: bold">
-              수분크림<br>30,000원
-            </p>
-          </div>
-          <div class="item">
-            <img src="../webservice/image/KakaoTalk_20241127_111509868_04.jpg" width="250" height="250" alt="클렌징폼">
-            <p style="font-weight: bold">
-              클렌징폼<br>15,000원
-            </p>
-          </div>
-          <div class="item">
-            <img src="../webservice/image/KakaoTalk_20241127_111509868_23.jpg" width="250" height="250" alt="마일드 썬크림">
-            <p style="font-weight: bold">
-              마일드 썬크림<br>20,000원
-            </p>
-          </div>
-          <div id="icon2">
-            <img src="../webservice/image/free-icon-font-angle-circle-right-7482887.png" width="24" height="24" style="border: none">
-          </div>
+          <%
+                }
+            } catch (Exception e) {
+                out.println("<p>에러 발생: " + e.getMessage() + "</p>");
+            } finally {
+                try {
+                    if (rs != null) rs.close();
+                    if (pstmt != null) pstmt.close();
+                    if (conn != null) conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+          %>
         </div>
       </section>
 

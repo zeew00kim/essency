@@ -140,7 +140,7 @@
               <input type="hidden" name="quantity" value="1"> <!-- 기본 수량 설정 -->
               <button type="submit" class="button">장바구니에 담기</button>
             </form>
-            <button class="button" onclick="checkLogin()">구매하기</button>
+            <button class="button" onclick="confirmPurchase()">구매하기</button>
           </div>
         </div>
       </section>
@@ -175,12 +175,15 @@
       return confirm("장바구니에 추가하시겠습니까?");
     }
 
-    function checkLogin() {
+    function confirmPurchase() {
       if (userName === 'null') {
         alert("로그인이 필요합니다!");
         window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
-      } else {
-        window.location.href = 'buy.jsp';
+        return;
+      }
+      if (confirm("해당 상품을 구매하시겠습니까?")) {
+        alert("감사합니다. 구매가 완료되었습니다. 🥰");
+        window.location.href = '<%= request.getContextPath() %>/webservice/buyList.jsp';
       }
     }
   </script>

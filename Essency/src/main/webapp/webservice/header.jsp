@@ -127,16 +127,6 @@ a:hover {
             <!-- 로그인한 경우 -->
             <p class="welcome-message"><%= loggedInUser.getUsername() %>님 반갑습니다 😊</p>
             
-            <!-- 로그아웃 버튼 -->
-            <form action="index.jsp" method="post">
-                <button type="submit" name="logout" class="button">로그아웃</button>
-            </form>
-            
-            <!-- 내 정보 버튼 -->
-            <form action="my_page.jsp" method="get">
-                <button type="submit" class="button">내 정보</button>
-            </form>
-            
             <!-- 구매 목록 버튼 -->
             <form action="buyList.jsp" method="get">
                 <button type="submit" class="button">구매 목록</button>
@@ -145,6 +135,16 @@ a:hover {
             <!-- 장바구니 버튼 -->
             <form action="cart.jsp" method="get">
                 <button type="submit" class="button">장바구니</button>
+            </form>
+            
+            <!-- 내 정보 버튼 -->
+            <form action="my_page.jsp" method="get">
+                <button type="submit" class="button">내 정보</button>
+            </form>
+            
+            <!-- 로그아웃 버튼 -->
+            <form action="index.jsp" method="post">
+                <button type="submit" name="logout" class="button">로그아웃</button>
             </form>
 
             <% } else { %>
