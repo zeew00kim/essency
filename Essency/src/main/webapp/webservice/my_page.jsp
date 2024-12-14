@@ -91,7 +91,6 @@
 
     <% if (loggedInUser != null) { %>
     <div class="edit-button">
-        <!-- 수정하기 버튼 -->
         <button onclick="confirmEdit()" style="font-weight: bold">수정하기</button>
     </div>
     <% } %>
@@ -100,14 +99,11 @@
 <%@ include file="footer.jsp" %>
 
 <script>
-    // 수정하기 버튼 클릭 시 배너 띄우기
     function confirmEdit() {
         const userConfirmed = confirm("정보를 수정하시겠습니까?");
         if (userConfirmed) {
-            // 확인을 누르면 edit_user.jsp 페이지로 이동
-            window.location.href = "edit_user.jsp";
+            window.location.href = "editProfile.jsp";
         }
-        // 취소를 누르면 아무것도 하지 않고 현재 페이지에 머뭄
     }
 </script>
 </body>
