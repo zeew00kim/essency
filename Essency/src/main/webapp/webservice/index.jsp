@@ -86,13 +86,11 @@
       text-decoration: none;
     }
     
-    /* 이미지 스타일 */
     img {
       border-radius: 5px;
       border: 2px solid gray;
     }
 
-    /* Best Review 스타일 */
     .reviewImg {
       display: flex;
       justify-content: space-around;
@@ -141,7 +139,6 @@
   </style>
 </head>
 <body>
-  <!-- Header 포함 -->
   <%@ include file="header.jsp" %>
   
   <div class="wrap">
@@ -154,7 +151,6 @@
         <h2>Best Items</h2>
         <div class="items">
           <%
-            // JDBC 연결 설정
             String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
             String dbUser = "root";
             String dbPassword = "root";
@@ -166,8 +162,6 @@
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-
-                // products 테이블에서 특정 아이템 가져오기
                 String query = "SELECT product_id, product_name, sale_price FROM products WHERE product_name IN ('lotion_1', 'cream_1', 'cleansing_1', 'ampoule_1')";
                 pstmt = conn.prepareStatement(query);
                 rs = pstmt.executeQuery();
@@ -200,13 +194,12 @@
           %>
         </div>
       </section>
-
       <section class="best-review">
         <h2>Best Review</h2>
         <div class="reviewImg">
           <div class="item">
             <img src="../webservice/image/KakaoTalk_20241127_111509868_22.jpg" width="250" height="250" alt="보습 크림">
-            <p>보습 크림 리뷰<br>벌써 n통째 구매중 입니다! 겨울에 쓰기 좋아요~</p>
+            <p>보습 크림 리뷰<br>벌써 5통째 구매중 입니다! 겨울에 쓰기 좋아요~</p>
           </div>
           <div class="item">
             <img src="../webservice/image/7cffd09ef5d100fe440dfdab11082b81.jpg" width="250" height="250" alt="촉촉 수분크림">
@@ -223,16 +216,13 @@
         </div>
       </section>
     </main>
-
-    <!-- Footer 포함 -->
     <%@ include file="footer.jsp" %>
   </div>
 
   <% 
-    // 로그아웃 처리
     if (request.getParameter("logout") != null) {
-        session.invalidate();  // 세션 종료
-        response.sendRedirect("index.jsp");  // 로그아웃 후 index.jsp로 리다이렉트
+        session.invalidate();
+        response.sendRedirect("index.jsp");
     }
   %>
 </body>

@@ -210,8 +210,8 @@
     </table>
 
     <% if (currentUser != null) { %>
-    <div class="total-section">
-      총 결제 금액: <%= totalPrice %>원
+    <div class="total-section" style="font-size: 20px">
+      담긴 상품의 총액 : <%= totalPrice %>원
     </div>
     <% } %>
   </main>

@@ -140,7 +140,12 @@
               <input type="hidden" name="quantity" value="1"> <!-- 기본 수량 설정 -->
               <button type="submit" class="button">장바구니에 담기</button>
             </form>
-            <button class="button" onclick="confirmPurchase()">구매하기</button>
+            <form action="processOrder.jsp" method="post" onsubmit="return confirmPurchase()">
+    			<input type="hidden" name="productId" value="<%= productId %>">
+    			<input type="hidden" name="quantity" value="1">
+    			<input type="hidden" name="totalPrice" value="<%= salePrice + shippingCharge %>">
+    			<button type="submit" class="button">구매하기</button>
+		 	</form>
           </div>
         </div>
       </section>
@@ -165,25 +170,25 @@
     const userName = '<%= userName %>'; // 서버에서 전달된 세션 값 사용
 
     function showBanner() {
-      if (userName === 'null') {
-        alert("로그인이 필요합니다!");
-        window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
-        return false;
-      }
-      return confirm("장바구니에 추가하시겠습니까?");
+        if (userName === 'null') {
+            alert("로그인이 필요합니다!");
+            window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp'; // 경로 수정
+            return false;
+        }
+        return confirm("장바구니에 추가하시겠습니까?");
     }
 
     function confirmPurchase() {
-      if (userName === 'null') {
-        alert("로그인이 필요합니다!");
-        window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
-        return;
-      }
-      if (confirm("해당 상품을 구매하시겠습니까?")) {
-        alert("감사합니다. 구매가 완료되었습니다. 🥰");
-        window.location.href = '<%= request.getContextPath() %>/webservice/buyList.jsp';
-      }
+        if (userName === 'null') {
+            alert("로그인이 필요합니다!");
+            window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp'; // 경로 수정
+            return false;
+        }
+        if (confirm("해당 상품을 구매하시겠습니까?")) {
+            alert("감사합니다. 구매가 완료되었습니다. 🥰");
+            return true; // 폼 제출 허용
+        }
     }
-  </script>
+</script>
 </body>
 </html>
