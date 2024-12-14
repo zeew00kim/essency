@@ -1,182 +1,164 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판 목록</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-<style>
-    .board-table {
-        border: 1px solid gray;
-        background-color: #B8D0FA;
-    }
+        * {
+            box-sizing: inherit;
+        }
 
-    .board-table th {
-        border: 1px solid gray;
-    }
+        a {
+            text-decoration: none;
+            font-weight: bold;
+            color: black;
+        }
 
-    .confirm-banner {
-        display: none;
-        position: fixed;
-        top: 30%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        border: 2px solid #B8D0FA;
-        border-radius: 10px;
-        padding: 20px;
-        width: 300px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-    }
+        a:hover {
+            text-decoration: underline;
+            color: purple !important;
+            transform: scale(1.05);
+        }
 
-    .confirm-banner button {
-        margin: 10px;
-        padding: 10px 20px;
-        font-weight: bold;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+        .button {
+            padding: 10px 20px;
+            background-color: #B8D0FA;
+            border: none;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
 
-    .confirm-banner .confirm {
-        background-color: #B8D0FA;
-        color: black;
-        transition: transform 0.3s ease, background-color 0.3s ease;
-    }
+        .button:hover {
+            background-color: Skyblue;
+            color: purple;
+            transform: scale(1.05);
+        }
 
-    .confirm-banner .confirm:hover {
-        background-color: Skyblue;
-        color: purple;
-        transform: scale(1.05);
-    }
+        .comment-table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: solid silver 2px;
+        }
 
-    .confirm-banner .cancel {
-        background-color: #ccc;
-        color: black;
-        transition: transform 0.3s ease, background-color 0.3s ease;
-    }
+        .comment-table th, .comment-table td {
+            border: solid silver 2px;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+        }
 
-    .confirm-banner .cancel:hover {
-        background-color: #999;
-        color: purple;
-        transform: scale(1.05);
-    }
-
-    .overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-    }
-</style>
-
+        .comment-table th {
+            background-color: #B8D0FA;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<%@ include file="header.jsp" %>
-    <div class="container">
-        <h1>게시판</h1>
-        <table class="board-table">
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Created At</th>
-                <th>Comments</th>
-            </tr>
-            <%
-                Connection conn = null;
-                PreparedStatement pstmt = null;
-                ResultSet rs = null;
+    <!-- Header 포함 -->
+    <%@ include file="header.jsp" %>
 
-                try {
-                    String jdbcUrl = "jdbc:mysql://localhost:3306/essency?useSSL=false&serverTimezone=UTC";
-                    String dbId = "root";
-                    String dbPass = "rkdwlgns78?";
+    <%
+        // Header.jsp에서 세션에 저장한 로그인 사용자 정보 가져오기
+        Object currentUser = session.getAttribute("loggedInUser");
 
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    conn = DriverManager.getConnection(jdbcUrl, dbId, dbPass);
+        if (currentUser == null) {
+            response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+            return;
+        }
+    %>
+    <main class="main">
+        <h1>게시판에 오신 것을 환영합니다!</h1>
+        <table class="comment-table">
+            <thead>
+                <tr>
+                    <th>댓글 ID</th>
+                    <th>작성자</th>
+                    <th>댓글 내용</th>
+                    <th>작성 시간</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    Connection conn = null;
+                    PreparedStatement pstmt = null;
+                    ResultSet rs = null;
 
-                    String sql = "SELECT b.id, b.title, b.author, b.created_at, " +
-                                 "       COUNT(c.id) AS comment_count " +
-                                 "FROM board b LEFT JOIN comments c ON b.id = c.board_id " +
-                                 "GROUP BY b.id ORDER BY b.created_at DESC";
-                    pstmt = conn.prepareStatement(sql);
-                    rs = pstmt.executeQuery();
+                    try {
+                        // 데이터베이스 연결
+                        Class.forName("com.mysql.cj.jdbc.Driver");
+                        String jdbcUrl = "jdbc:mysql://localhost:3306/team_project";
+                        String dbUser = "root";
+                        String dbPass = "root";
 
-                    while (rs.next()) {
-                        int id = rs.getInt("id");
-                        String title = rs.getString("title");
-                        String author = rs.getString("author");
-                        String createdAt = rs.getString("created_at");
-                        int commentCount = rs.getInt("comment_count");
+                        conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPass);
 
-                        out.println("<tr>");
-                        out.println("<td>" + id + "</td>");
-                        out.println("<td><a href='view.jsp?id=" + id + "'>" + title + "</a></td>");
-                        out.println("<td>" + author + "</td>");
-                        out.println("<td>" + createdAt + "</td>");
-                        out.println("<td>" + commentCount + "</td>");
-                        out.println("</tr>");
+                        // 댓글 데이터 조회 쿼리
+                        String query = "SELECT c.comment_id, u.username AS author, c.content, c.created_at " +
+                                       "FROM comments c " +
+                                       "JOIN users u ON c.user_id = u.user_id " +
+                                       "WHERE u.username = ?";
+                        pstmt = conn.prepareStatement(query);
+
+                        // 현재 사용자 이름을 파라미터로 설정
+                        pstmt.setString(1, currentUser.toString());
+                        rs = pstmt.executeQuery();
+
+                        boolean hasComments = false;
+
+                        while (rs.next()) {
+                            hasComments = true;
+                            int commentId = rs.getInt("comment_id");
+                            String author = rs.getString("author");
+                            String content = rs.getString("content");
+                            String createdAt = rs.getString("created_at");
+                            %>
+                            <tr>
+                                <td><%= commentId %></td>
+                                <td><%= author %></td>
+                                <td><%= content %></td>
+                                <td><%= createdAt %></td>
+                            </tr>
+                            <%
+                        }
+
+                        if (!hasComments) {
+                            %>
+                            <tr>
+                                <td colspan="4">작성한 댓글이 없습니다.</td>
+                            </tr>
+                            <%
+                        }
+                    } catch (Exception e) {
+                        out.println("<tr><td colspan='4'>오류 발생: " + e.getMessage() + "</td></tr>");
+                        e.printStackTrace();
+                    } finally {
+                        // 자원 해제
+                        if (rs != null) rs.close();
+                        if (pstmt != null) pstmt.close();
+                        if (conn != null) conn.close();
                     }
-                } catch (Exception e) {
-                    out.println("<p>오류 발생: " + e.getMessage() + "</p>");
-                    e.printStackTrace();
-                } finally {
-                    if (rs != null) rs.close();
-                    if (pstmt != null) pstmt.close();
-                    if (conn != null) conn.close();
-                }
-            %>
+                %>
+            </tbody>
         </table>
-        <!-- 글 작성하기 버튼 -->
-        <button class="button" onclick="checkLogin()">글 작성하기</button>
-    </div>
-
-    <!-- 로그인 배너 -->
-    <div class="overlay" id="overlay"></div>
-    <div class="confirm-banner" id="confirmBanner">
-        <p id="bannerMessage">로그인이 필요합니다!</p>
-        <button class="confirm" onclick="redirectToLogin()">확인</button>
-        <button class="cancel" onclick="hideBanner()">취소</button>
-    </div>
-
-    <%@ include file="footer.jsp" %>
-
-    <script>
-        // 로그인 확인용 변수 (JSP 세션 변수 전달)
-        const userName = '<%= (String) session.getAttribute("userName") %>';
-
-        // 글 작성하기 버튼 클릭 시
-        function checkLogin() {
-            if (!userName || userName === 'null') {
-                // 로그인이 되어 있지 않으면 로그인 배너 표시
-                document.getElementById('overlay').style.display = 'block';
-                document.getElementById('confirmBanner').style.display = 'block';
-            } else {
-                // 로그인이 되어 있으면 글 작성 페이지로 이동
-                window.location.href = 'write.jsp';
-            }
-        }
-
-        // 배너 숨기기
-        function hideBanner() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('confirmBanner').style.display = 'none';
-        }
-
-        // 로그인 페이지로 이동
-        function redirectToLogin() {
-            window.location.href = '<%= request.getContextPath() %>/jsp/login.jsp';
-        }
-    </script>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="button" onclick="location.href='write.jsp'">글 작성하기</button>
+        </div>
+    </main>
 </body>
 </html>

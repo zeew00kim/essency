@@ -80,8 +80,8 @@
     // 로그인된 사용자 정보
     User currentUser = (User) session.getAttribute("loggedInUser");
     String userName = (currentUser != null) ? currentUser.getUsername() : "null";
-	%>
-	
+    %>
+  
     <main class="main">
       <section class="m2">
         <div class="product-image">
@@ -140,12 +140,12 @@
               <input type="hidden" name="quantity" value="1"> <!-- 기본 수량 설정 -->
               <button type="submit" class="button">장바구니에 담기</button>
             </form>
-            <form action="processOrder.jsp" method="post" onsubmit="return confirmPurchase()">
-    			<input type="hidden" name="productId" value="<%= productId %>">
-    			<input type="hidden" name="quantity" value="1">
-    			<input type="hidden" name="totalPrice" value="<%= salePrice + shippingCharge %>">
-    			<button type="submit" class="button">구매하기</button>
-		 	</form>
+            <form id="purchaseForm" action="processOrder.jsp" method="post" onsubmit="return confirmPurchase()">
+              <input type="hidden" name="productId" value="<%= productId %>">
+              <input type="hidden" name="quantity" value="1">
+              <input type="hidden" name="totalPrice" value="<%= salePrice + shippingCharge %>">
+              <button type="submit" class="button">구매하기</button>
+            </form>
           </div>
         </div>
       </section>
@@ -185,10 +185,11 @@
             return false;
         }
         if (confirm("해당 상품을 구매하시겠습니까?")) {
-            alert("감사합니다. 구매가 완료되었습니다. 🥰");
-            return true;
+            return true; // 폼 제출
+        } else {
+            return false; // 현재 페이지 유지
         }
     }
-</script>
+  </script>
 </body>
 </html>
