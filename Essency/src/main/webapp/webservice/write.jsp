@@ -17,6 +17,7 @@
     <title>글 작성하기</title>
     <link rel="stylesheet" href="layout1.css"> <!-- 헤더 관련 CSS -->
     <style>
+        /* 페이지에만 영향을 미치는 스타일 */
         .write-container {
             font-family: Arial, sans-serif;
             margin: 20px auto;
@@ -55,7 +56,7 @@
         .write-container textarea {
             resize: none;
         }
-        .write-container input[type="button"] {
+        .write-container input[type="submit"] {
             display: block;
             width: 100%;
             padding: 10px 0;
@@ -67,63 +68,24 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        .write-container input[type="button"]:hover {
+        .write-container input[type="submit"]:hover {
             background-color: #0056b3;
         }
-        /* 배너 스타일 */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
+        .btn1 {
+        	padding: 10px 20px !important;
+    		background-color: #B8D0FA !important;
+    		border: none !important;
+    		cursor: pointer !important;
+    		color: black !important;
+    		font-weight: bold !important;
+    		border-radius: 5px !important;
+    		transition: transform 0.3s ease, background-color 0.3s ease !important;
         }
-        .confirm-banner {
-            display: none;
-            position: fixed;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            border: 2px solid #B8D0FA;
-            border-radius: 10px;
-            padding: 20px;
-            width: 300px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-        .confirm-banner button {
-            margin: 10px;
-            padding: 10px 20px;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .confirm-banner .confirm {
-            background-color: #B8D0FA;
-            color: black;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-        .confirm-banner .confirm:hover {
-            background-color: Skyblue;
-            color: purple;
-            transform: scale(1.05);
-        }
-        .confirm-banner .cancel {
-            background-color: #ccc;
-            color: black;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-        .confirm-banner .cancel:hover {
-            background-color: #999;
-            color: purple;
-            transform: scale(1.05);
-        }
+        .btn1:hover {
+    		background-color: Skyblue !important;
+    		color: purple !important;
+    		transform: scale(1.05) !important;
+		}       
     </style>
 </head>
 <body>
@@ -131,7 +93,7 @@
 
     <div class="write-container">
         <h2>글 작성하기</h2>
-        <form id="writeForm" action="write_process.jsp" method="post">
+        <form action="write_process.jsp" method="post">
             <label for="title">제목:</label>
             <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
 
@@ -141,37 +103,10 @@
             <label for="content">내용:</label>
             <textarea id="content" name="content" rows="10" placeholder="내용을 입력하세요" required></textarea>
 
-            <input type="button" value="글 작성" onclick="showConfirmBanner()">
+            <input type="submit" class="btn1" value="글 작성">
         </form>
     </div>
 
-    <!-- 배너 -->
-    <div class="overlay" id="overlay"></div>
-    <div class="confirm-banner" id="confirmBanner">
-        <p>글을 등록하시겠습니까?</p>
-        <button class="confirm" onclick="submitForm()">확인</button>
-        <button class="cancel" onclick="hideConfirmBanner()">취소</button>
-    </div>
-
     <%@ include file="footer.jsp" %>
-
-    <script>
-        // 배너 보이기
-        function showConfirmBanner() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('confirmBanner').style.display = 'block';
-        }
-
-        // 배너 숨기기
-        function hideConfirmBanner() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('confirmBanner').style.display = 'none';
-        }
-
-        // 폼 제출
-        function submitForm() {
-            document.getElementById('writeForm').submit(); // write_process.jsp로 이동
-        }
-    </script>
 </body>
-</html>
+</html> 

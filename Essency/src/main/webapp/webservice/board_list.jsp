@@ -67,6 +67,11 @@
             background-color: #B8D0FA;
             font-weight: bold;
         }
+        .main-header {
+        	text-align: center;
+        	font-weight: bold;
+        	font-size: 28px;
+        }
     </style>
 </head>
 <body>
@@ -83,13 +88,13 @@
         }
     %>
     <main class="main">
-        <h1>게시판에 오신 것을 환영합니다!</h1>
+        <p class="main-header">문의 게시판</p>
         <table class="comment-table">
             <thead>
                 <tr>
-                    <th>댓글 ID</th>
+                    <th>ID</th>
                     <th>작성자</th>
-                    <th>댓글 내용</th>
+                    <th>내용</th>
                     <th>작성 시간</th>
                 </tr>
             </thead>
