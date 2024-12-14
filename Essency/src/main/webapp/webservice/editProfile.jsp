@@ -108,7 +108,7 @@
 
     <div class="container">
         <h2>내 정보 수정</h2>
-        <form action="/Essency/editProfileControl" method="POST" onsubmit="return validateForm();">
+        <form action="updateProfile.jsp" method="POST" onsubmit="return validateForm();">
             <div class="form-group">
                 <label for="username">아이디</label>
                 <input type="text" id="username" value="<%= username %>" readonly>
