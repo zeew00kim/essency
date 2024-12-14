@@ -159,8 +159,6 @@
         </div>
       </div>
     </main>
-
-    <%@ include file="footer.jsp" %>
   </div>
 
   <script>
