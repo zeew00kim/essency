@@ -158,7 +158,7 @@
       </thead>
       <tbody>
         <% while (rs.next()) { %>
-        <tr>
+        <tr style="background-color: #f8f8f8">
           <td><%= rs.getInt("product_id") %></td>
           <td><%= rs.getString("product_name") %></td>
           <td><%= rs.getInt("sale_price") %></td>

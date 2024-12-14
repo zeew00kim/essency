@@ -160,7 +160,7 @@
                       totalPrice += total;
 
                       %>
-                      <tr>
+                      <tr style="background-color: #f8f8f8">
                           <td>
                             <a href="<%= request.getContextPath() %>/webservice/itemdetail.jsp?productId=<%= productId %>">
                               <!-- 제품 이미지 -->

@@ -71,28 +71,30 @@ public class UserDAO {
 	}
 
 	public User getUserByUsername(String username) throws SQLException {
-		open();
-		String sql = "SELECT * FROM users WHERE username = ?";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, username);
-			ResultSet rs = pstmt.executeQuery();
+	    open();
+	    String sql = "SELECT * FROM users WHERE username = ?";
+	    try {
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, username);
+	        ResultSet rs = pstmt.executeQuery();
 
-			if (rs.next()) {
-				User user = new User();
-				user.setUsername(rs.getString("username"));
-				user.setPassword(rs.getString("password"));
-				user.setEmail(rs.getString("email"));
-				user.setPhone(rs.getString("phone"));
-				return user;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return null; // 사용자 미발견 시 null 반환
+	        if (rs.next()) {
+	            User user = new User();
+	            user.setUserId(rs.getInt("user_id")); // userId 추가
+	            user.setUsername(rs.getString("username"));
+	            user.setPassword(rs.getString("password"));
+	            user.setEmail(rs.getString("email"));
+	            user.setPhone(rs.getString("phone"));
+	            return user;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close();
+	    }
+	    return null; // 사용자 미발견 시 null 반환
 	}
+
 
 	public boolean registerUser(User user) {
 		open();

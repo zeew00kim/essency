@@ -23,7 +23,7 @@
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
     table {
-        width: 100%;
+        width: 100%;       
         text-align: center;
         border-collapse: collapse;
     }
@@ -33,6 +33,7 @@
         text-align: center;
         vertical-align: middle;
     }
+    
     .btn {
         margin: 0 5px;
     }
@@ -160,7 +161,7 @@
       </thead>
       <tbody>
         <% while (rs.next()) { %>
-        <tr>
+        <tr style="background-color: #f8f8f8">
           <td><%= rs.getInt("user_id") %></td>
           <td><%= rs.getString("username") %></td>
           <td><%= rs.getString("password") %></td>

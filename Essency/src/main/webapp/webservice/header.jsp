@@ -127,19 +127,19 @@ a:hover {
             <!-- 로그인한 경우 -->
             <p class="welcome-message"><%= loggedInUser.getUsername() %>님 반갑습니다 😊</p>
             
-            <!-- 구매 목록 버튼 -->
-            <form action="buyList.jsp" method="get">
-                <button type="submit" class="button">구매 목록</button>
-            </form>
-
             <!-- 장바구니 버튼 -->
             <form action="cart.jsp" method="get">
                 <button type="submit" class="button">장바구니</button>
             </form>
             
+            <!-- 구매 목록 버튼 -->
+            <form action="buyList.jsp" method="get">
+                <button type="submit" class="button">구매 목록</button>
+            </form>
+            
             <!-- 내 정보 버튼 -->
             <form action="my_page.jsp" method="get">
-                <button type="submit" class="button">내 정보</button>
+                <button type="submit" class="button">마이 페이지</button>
             </form>
             
             <!-- 로그아웃 버튼 -->
@@ -149,8 +149,8 @@ a:hover {
 
             <% } else { %>
             <!-- 로그인하지 않은 경우 -->
-            <a href="/Essency/jsp/signUp.jsp" class="button" style="margin-right: -15px;">회원가입</a>
-            <a href="/Essency/jsp/login.jsp" class="button">로그인</a>
+            <a href="/Essency/jsp/signUp.jsp" class="button" style="margin-right: -15px; color: black; text-decoration: none;">회원가입</a>
+            <a href="/Essency/jsp/login.jsp" class="button" style="color: black; text-decoration: none;">로그인</a>
             <% } %>
         </div>
         <nav class="h3">

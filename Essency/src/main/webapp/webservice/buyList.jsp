@@ -94,13 +94,12 @@
     <table class="buy-table">
       <thead>
         <tr>
-          <th>주문 번호</th>
           <th>제품</th>
           <th>수량</th>
           <th>판매 가격</th>
           <th>배송비</th>
           <th>총 가격</th>
-          <th>주문 시간</th>
+          <th>주문 일자</th>
         </tr>
       </thead>
       <tbody>
@@ -122,7 +121,7 @@
                   conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
 
                   // 주문 목록 가져오기
-                  String query = "SELECT o.order_id, oi.product_id, p.product_name, oi.quantity, oi.price, p.shipping_charge, o.created_at " +
+                  String query = "SELECT oi.product_id, p.product_name, oi.quantity, oi.price, p.shipping_charge, o.created_at " +
                                  "FROM orders o " +
                                  "JOIN order_items oi ON o.order_id = oi.order_id " +
                                  "JOIN products p ON oi.product_id = p.product_id " +
@@ -135,7 +134,6 @@
 
                   while (rs.next()) {
                       hasOrders = true;
-                      int orderId = rs.getInt("order_id");
                       String productName = rs.getString("product_name");
                       int quantity = rs.getInt("quantity");
                       int price = rs.getInt("price");
@@ -146,8 +144,7 @@
                       totalOrderPrice += total;
 
                       %>
-                      <tr>
-                          <td><%= orderId %></td>
+                      <tr style="background-color: #f8f8f8">
                           <td>
                             <a href="<%= request.getContextPath() %>/webservice/itemdetail.jsp?productId=<%= rs.getInt("product_id") %>">
                               <!-- 제품 이미지 -->
@@ -168,7 +165,7 @@
                   if (!hasOrders) {
                       %>
                       <tr>
-                          <td colspan="7">구매 내역이 없습니다.</td>
+                          <td colspan="6">구매 내역이 없습니다.</td>
                       </tr>
                       <%
                   }
@@ -182,7 +179,7 @@
           } else {
               %>
               <tr>
-                  <td colspan="7">로그인이 필요합니다.</td>
+                  <td colspan="6">로그인이 필요합니다.</td>
               </tr>
               <%
           }

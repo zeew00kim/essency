@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>마이 페이지</title>
@@ -13,14 +12,14 @@
             background-color: #f4f4f4;
         }
         .container {
-            width: 80%;
-            margin: 20px auto;
+            width: 30%;
+            margin: 50px auto;
             background: #fff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
-        h1 {
+        h2 {
             text-align: center;
             color: #333;
             margin-bottom: 30px;
@@ -47,18 +46,22 @@
             display: flex;
             justify-content: flex-end;
             margin-top: 20px;
-        }
-        .edit-button a {
-            text-decoration: none;
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
             transition: background-color 0.3s ease;
         }
-        .edit-button a:hover {
-            background-color: #0056b3;
+        .edit-button button {
+            background-color: #B8D0FA;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 auto;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .edit-button button:hover {
+            background-color: skyblue;
+            transform: scale(1.05);
+            color: purple;
         }
     </style>
 </head>
@@ -66,60 +69,46 @@
 <%@ include file="header.jsp" %>
 
 <div class="container">
-    <h1>마이 페이지</h1>
+    <h2>마이 페이지</h2>
     <%
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        // 로그인된 사용자의 ID (예: 세션에서 가져오기)
-        int userId = 1; // 예시: 1번 사용자
-
-        try {
-            // 데이터베이스 연결 정보
-            String jdbcUrl = "jdbc:mysql://localhost:3306/essency?useSSL=false&serverTimezone=UTC";
-            String dbId = "root";
-            String dbPass = "rkdwlgns78?";
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(jdbcUrl, dbId, dbPass);
-
-            // 사용자 정보 가져오기
-            String sql = "SELECT * FROM users WHERE id = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, userId);
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                String username = rs.getString("username");
-                String email = rs.getString("email");
-                String phone = rs.getString("phone");
-                String role = rs.getString("role");
-
-                out.println("<div class='user-info'>");
-                out.println("<p><label>사용자 이름:</label> " + username + "</p>");
-                out.println("<p><label>이메일:</label> " + email + "</p>");
-                out.println("<p><label>전화번호:</label> " + phone + "</p>");
-                out.println("<p><label>역할:</label> " + role + "</p>");
-                out.println("</div>");
-            } else {
-                out.println("<p>사용자 정보를 찾을 수 없습니다.</p>");
-            }
-        } catch (Exception e) {
-            out.println("<p>오류 발생: " + e.getMessage() + "</p>");
-            e.printStackTrace();
-        } finally {
-            if (rs != null) rs.close();
-            if (pstmt != null) pstmt.close();
-            if (conn != null) conn.close();
+        if (loggedInUser == null) { 
+    %>
+        <p>로그인이 필요합니다. <a href="/Essency/jsp/login.jsp">로그인 페이지로 이동</a></p>
+    <%
+        } else {            
+            String username = loggedInUser.getUsername();
+            String email = loggedInUser.getEmail();
+            String phone = loggedInUser.getPhone() != null ? loggedInUser.getPhone() : "등록되지 않음";
+    %>
+            <div class="user-info">
+                <p><label>사용자 이름:</label> <%= username %></p>
+                <p><label>이메일:</label> <%= email %></p>
+                <p><label>전화번호:</label> <%= phone %></p>
+            </div>
+    <%
         }
     %>
 
+    <% if (loggedInUser != null) { %>
     <div class="edit-button">
-        <a href="edit_user.jsp?id=<%= userId %>">수정하기</a>
+        <!-- 수정하기 버튼 -->
+        <button onclick="confirmEdit()" style="font-weight: bold">수정하기</button>
     </div>
+    <% } %>
 </div>
+
 <%@ include file="footer.jsp" %>
 
+<script>
+    // 수정하기 버튼 클릭 시 배너 띄우기
+    function confirmEdit() {
+        const userConfirmed = confirm("정보를 수정하시겠습니까?");
+        if (userConfirmed) {
+            // 확인을 누르면 edit_user.jsp 페이지로 이동
+            window.location.href = "edit_user.jsp";
+        }
+        // 취소를 누르면 아무것도 하지 않고 현재 페이지에 머뭄
+    }
+</script>
 </body>
 </html>
