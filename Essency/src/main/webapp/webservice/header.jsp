@@ -159,7 +159,7 @@ a:hover {
                 <a href="lotion.jsp">로션/크림</a>&nbsp;
                 <a href="cleansing.jsp">클렌징</a>&nbsp; 
                 <a href="ampoule.jsp">앰플/세럼</a>&nbsp;
-                <a href="board_list.jsp">Q&A 게시판</a>
+                <a href="board_list.jsp">게시판</a>
             </div>
         </nav>
     </header>

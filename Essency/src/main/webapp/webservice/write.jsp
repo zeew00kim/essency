@@ -87,13 +87,18 @@
     		transform: scale(1.05) !important;
 		}       
     </style>
+    <script>
+        function confirmSubmit() {
+            return confirm("글을 작성하시겠습니까?");
+        }
+    </script>
 </head>
 <body>
     <%@ include file="header.jsp" %>
 
     <div class="write-container">
         <h2>글 작성하기</h2>
-        <form action="write_process.jsp" method="post">
+        <form action="write_process.jsp" method="post" onsubmit="return confirmSubmit();">
             <label for="title">제목:</label>
             <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
 
@@ -109,4 +114,4 @@
 
     <%@ include file="footer.jsp" %>
 </body>
-</html> 
+</html>

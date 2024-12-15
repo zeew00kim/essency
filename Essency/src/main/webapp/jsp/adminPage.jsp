@@ -67,7 +67,7 @@
           <a href="<%= request.getContextPath() %>/jsp/userManage.jsp" class="btn btn-primary">등록된 사용자 정보</a>
         </div>
         <div class="col-12 mb-3">
-          <a href="<%= request.getContextPath() %>/jsp/commentManage.jsp" class="btn btn-secondary">등록된 댓글 정보</a>
+          <a href="<%= request.getContextPath() %>/jsp/boardManage.jsp" class="btn btn-secondary">등록된 게시글 관리</a>
         </div>
         <div class="col-12">
           <a href="<%= request.getContextPath() %>/jsp/productManage.jsp" class="btn btn-success">등록된 상품 관리</a>

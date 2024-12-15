@@ -147,10 +147,10 @@
         String query = "SELECT * FROM users"; // 테이블 이름 users
         rs = stmt.executeQuery(query);
     %>
-    <table class="table table-bordered" style="border: 2px solid silver;">
+    <table class="table table-bordered" style="border: 2px solid silver; width: 80%; margin:0 auto; margin-bottom: 20px;">
       <thead style="background-color: #B8D0FA;">
         <tr style="font-size: 18px;">
-          <th>ID</th>
+          <!-- <th>ID</th> -->
           <th>아이디</th>
           <th>비밀번호</th>
           <th>이메일</th>
@@ -162,7 +162,7 @@
       <tbody>
         <% while (rs.next()) { %>
         <tr style="background-color: #f8f8f8">
-          <td><%= rs.getInt("user_id") %></td>
+          <!-- <td><%= rs.getInt("user_id") %></td> -->
           <td><%= rs.getString("username") %></td>
           <td><%= rs.getString("password") %></td>
           <td><%= rs.getString("email") %></td>

@@ -4,8 +4,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>상품 관리</title>
+  <title>게시판 관리</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
@@ -36,24 +35,6 @@
     .btn {
         margin: 0 5px;
     }
-    .submit-btn {
-        padding: 10px 20px;
-        background-color: #B8D0FA;
-        border: none;
-        cursor: pointer;
-        font-weight: bold;
-        border-radius: 5px;
-        transition: transform 0.3s ease, background-color 0.3s ease;
-        display: block;
-        margin: 0 auto;
-        margin-bottom: 10px;
-        width: 20%;
-    }
-    .submit-btn:hover {
-        background-color: Skyblue;
-        color: purple;
-        transform: scale(1.05);
-    }
     .delete-btn {
         padding: 10px 20px;
         background-color: Silver;
@@ -65,6 +46,24 @@
     }
     .delete-btn:hover {
         background-color: #f05252;
+        color: purple;
+        transform: scale(1.05);
+    }
+    .submit-btn {
+        padding: 10px 20px;
+        background-color: #B8D0FA;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 10px;
+        width: 30%;
+    }
+    .submit-btn:hover {
+        background-color: Skyblue;
         color: purple;
         transform: scale(1.05);
     }
@@ -108,14 +107,14 @@
     }
   </style>
   <script>
-    // 등록 버튼 클릭 시 확인 배너
-    function confirmAdd() {
-      return confirm("새로운 상품 정보를 등록하시겠습니까?");
-    }
-
     // 삭제 버튼 클릭 시 확인 배너
     function confirmDelete() {
-      return confirm("등록된 상품 정보를 삭제하시겠습니까?");
+      return confirm("등록된 게시글을 삭제하시겠습니까?");
+    }
+
+    // 등록 버튼 클릭 시 확인 배너
+    function confirmAdd() {
+      return confirm("새로운 공지글을 등록하시겠습니까?");
     }
   </script>
 </head>
@@ -124,7 +123,7 @@
 <%@ include file="adminHeader.jsp" %>
 
 <div class="container">
-    <h3 class="text-center mb-4" style="font-weight: bold">등록된 상품 정보</h3>
+    <h3 class="text-center mb-4" style="font-weight: bold">등록된 게시글 관리</h3>
 
     <% 
       // 데이터베이스 연결
@@ -141,32 +140,30 @@
         conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
         stmt = conn.createStatement();
         
-        // 상품 데이터 조회
-        String query = "SELECT * FROM products"; // 테이블 이름 products
+        // 게시글 데이터 조회
+        String query = "SELECT * FROM board"; // 테이블 이름 board
         rs = stmt.executeQuery(query);
     %>
-    <table class="table table-bordered" style="border: 2px solid silver; width: 70%; margin: 0 auto;">
+    <table class="table table-bordered" style="border: 2px solid silver; width: 60%; margin: 0 auto;">
       <thead style="background-color: #B8D0FA;">
         <tr style="font-size: 18px;">
-          <!-- <th>ID</th>  -->
-          <th>상품명</th>
-          <th>판매 가격</th>
-          <th>배송비</th>
-          <th style="width: 15%">등록일</th>
-          <th>삭제</th>
+          <!-- <th>ID</th> -->
+          <th style="width: 35%">제목</th>
+          <th style="width: 20%">작성자</th>
+          <th style="width: 30%">작성 시간</th>
+          <th style="width: 15%">삭제</th>
         </tr>
       </thead>
       <tbody>
         <% while (rs.next()) { %>
         <tr style="background-color: #f8f8f8">
-          <!-- <td><%= rs.getInt("product_id") %></td>  -->
-          <td><%= rs.getString("product_name") %></td>
-          <td><%= rs.getInt("sale_price") %></td>
-          <td><%= rs.getInt("shipping_charge") %></td>
+          <!-- <td><%= rs.getInt("id") %></td> -->
+          <td><%= rs.getString("title") %></td>
+          <td><%= rs.getString("author") %></td>
           <td><%= rs.getTimestamp("created_at") %></td>
           <td>
-            <form action="deleteProduct.jsp" method="POST" style="display:inline;" onsubmit="return confirmDelete()">
-              <input type="hidden" name="product_id" value="<%= rs.getInt("product_id") %>">
+            <form action="deleteBoard.jsp" method="POST" style="display:inline;" onsubmit="return confirmDelete()">
+              <input type="hidden" name="id" value="<%= rs.getInt("id") %>">
               <button type="submit" class="delete-btn">삭제</button>
             </form>
           </td>
@@ -188,23 +185,24 @@
       }
     %>
 
+    <!-- 새로운 공지글 등록 -->
     <div class="wrap">
-      <h3 class="mt-4" style="font-weight: bold; text-align: center;">새로운 상품 등록</h3>
+      <h3 class="mt-4" style="font-weight: bold; text-align: center;">관리자 공지글 등록</h3>
       <br>
-      <form action="addProduct.jsp" method="POST" onsubmit="return confirmAdd()">
+      <form action="addBoard.jsp" method="POST" onsubmit="return confirmAdd()">
         <div class="mb-3">
-          <label for="product_name" class="form-label">상품명</label>
-          <input type="text" class="form-control" id="product_name" name="product_name" required style="width: 80%;">
+          <label for="title" class="form-label">제목</label>
+          <input type="text" class="form-control" id="title" name="title" required>
         </div>
         <div class="mb-3">
-          <label for="sale_price" class="form-label">판매 가격</label>
-          <input type="number" class="form-control" id="sale_price" name="sale_price" required style="width: 80%;">
+          <label for="author" class="form-label">작성자</label>
+          <input type="text" class="form-control" id="author" name="author" value="관리자" readonly>
         </div>
         <div class="mb-3">
-          <label for="shipping_charge" class="form-label">배송비</label>
-          <input type="number" class="form-control" id="shipping_charge" name="shipping_charge" value="0" style="width: 80%;">
+          <label for="content" class="form-label">내용</label>
+          <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
         </div>
-        <button type="submit" class="submit-btn">등록</button>
+        <button type="submit" class="submit-btn">공지글 등록</button>
       </form>
     </div>
 </div>
