@@ -14,7 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>글 작성하기</title>
+    <title>게시판 페이지</title>
     <link rel="stylesheet" href="layout1.css"> <!-- 헤더 관련 CSS -->
     <style>
         /* 페이지에만 영향을 미치는 스타일 */
@@ -80,6 +80,8 @@
     		font-weight: bold !important;
     		border-radius: 5px !important;
     		transition: transform 0.3s ease, background-color 0.3s ease !important;
+    		width: 20% !important;
+    		margin: 0 auto;
         }
         .btn1:hover {
     		background-color: Skyblue !important;
@@ -97,7 +99,7 @@
     <%@ include file="header.jsp" %>
 
     <div class="write-container">
-        <h2>글 작성하기</h2>
+        <h2>자유롭게 글을 작성해주세요 😁</h2>
         <form action="write_process.jsp" method="post" onsubmit="return confirmSubmit();">
             <label for="title">제목:</label>
             <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
@@ -108,7 +110,7 @@
             <label for="content">내용:</label>
             <textarea id="content" name="content" rows="10" placeholder="내용을 입력하세요" required></textarea>
 
-            <input type="submit" class="btn1" value="글 작성">
+            <input type="submit" class="btn1" value="등 록">
         </form>
     </div>
 
