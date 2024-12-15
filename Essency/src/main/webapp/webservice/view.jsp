@@ -107,6 +107,22 @@
     		transform: scale(1.05);
     		text-decoration: none;
         }
+        .btn-comment {
+        	background-color: #B8D0FA;
+    		border: none;
+    		cursor: pointer;
+    		color: black;
+    		font-weight: bold;
+    		border-radius: 5px;
+    		transition: transform 0.3s ease, background-color 0.3s ease;
+    		margin-right: 10px;
+        }
+        .btn-comment:hover {
+        	background-color: skyblue;
+            color: purple !important;
+    		transform: scale(1.05);
+    		text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -187,7 +203,7 @@
             <input type="text" name="author" value="<%= loggedInUser.getUsername() %>" readonly>
             <label>내용:</label>
             <textarea name="content" rows="4" required></textarea>
-            <input type="submit" value="댓글 작성">
+            <input type="submit" value="댓글 작성" class="btn-comment">
         </form>
     </div>
 </div>
