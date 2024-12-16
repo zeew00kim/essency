@@ -107,12 +107,10 @@
     }
   </style>
   <script>
-    // 삭제 버튼 클릭 시 확인 배너
     function confirmDelete() {
       return confirm("등록된 게시글을 삭제하시겠습니까?");
     }
 
-    // 등록 버튼 클릭 시 확인 배너
     function confirmAdd() {
       return confirm("새로운 공지글을 등록하시겠습니까?");
     }
@@ -126,7 +124,6 @@
     <h3 class="text-center mb-4" style="font-weight: bold">등록된 게시글 관리</h3>
 
     <% 
-      // 데이터베이스 연결
       String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
       String dbUser = "root";
       String dbPassword = "root";
@@ -139,9 +136,7 @@
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
         stmt = conn.createStatement();
-        
-        // 게시글 데이터 조회
-        String query = "SELECT * FROM board"; // 테이블 이름 board
+        String query = "SELECT * FROM board";
         rs = stmt.executeQuery(query);
     %>
     <table class="table table-bordered" style="border: 2px solid silver; width: 60%; margin: 0 auto;">

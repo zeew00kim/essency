@@ -53,11 +53,9 @@
     <header class="header">
       <div class="h1">
         <% 
-        // 세션에서 로그인 사용자 정보 가져오기
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getUsername() != null) {
         %>
-          <!-- 로그인한 경우 -->
           <p class="welcome-message"><%= loggedInUser.getUsername() %>님 반갑습니다 😊</p>
           <form action="/Essency/webservice/index.jsp" method="post">
             <button type="submit" name="logout" class="button" style="color: #2c3e50">로그아웃</button>

@@ -64,7 +64,7 @@ a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100px; /* 헤더 높이 설정 */
+    height: 100px; 
     margin: 0;
     padding: 0;
     margin-bottom: -25px;
@@ -77,7 +77,7 @@ a:hover {
 }
 
 .h1 {
-    margin-top: 20px; /* 로고 아래로 여백 추가 */
+    margin-top: 20px; 
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -120,35 +120,24 @@ a:hover {
         </div>
         <div class="h1">
             <% 
-            // 세션에서 로그인 사용자 정보 가져오기
             User loggedInUser = (User) session.getAttribute("loggedInUser");
             if (loggedInUser != null && loggedInUser.getUsername() != null) {
             %>
-            <!-- 로그인한 경우 -->
             <p class="welcome-message"><%= loggedInUser.getUsername() %>님 반갑습니다 😊</p>
-            
-            <!-- 장바구니 버튼 -->
             <form action="cart.jsp" method="get">
                 <button type="submit" class="button">장바구니</button>
             </form>
-            
-            <!-- 구매 목록 버튼 -->
             <form action="buyList.jsp" method="get">
                 <button type="submit" class="button">구매 목록</button>
             </form>
-            
-            <!-- 내 정보 버튼 -->
             <form action="my_page.jsp" method="get">
                 <button type="submit" class="button">마이 페이지</button>
             </form>
-            
-            <!-- 로그아웃 버튼 -->
             <form action="index.jsp" method="post">
                 <button type="submit" name="logout" class="button">로그아웃</button>
             </form>
 
             <% } else { %>
-            <!-- 로그인하지 않은 경우 -->
             <a href="/Essency/jsp/signUp.jsp" class="button" style="margin-right: -15px; color: black; text-decoration: none;">회원가입</a>
             <a href="/Essency/jsp/login.jsp" class="button" style="color: black; text-decoration: none;">로그인</a>
             <% } %>

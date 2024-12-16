@@ -23,6 +23,10 @@
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.3</version>
+                <configuration>
+                    <!-- web.xml 없이 WAR 생성 가능하도록 설정 -->
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -85,8 +89,8 @@
             <artifactId>json</artifactId>
             <version>20210307</version>
         </dependency>
-		
-		<!-- Gson 라이브러리 -->
+        
+        <!-- Gson 라이브러리 -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

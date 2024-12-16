@@ -8,7 +8,6 @@
 </head>
 <body>
 <%
-    // 데이터베이스 연결 정보
     String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
     String dbUser = "root";
     String dbPassword = "root";
@@ -16,24 +15,20 @@
     Connection conn = null;
     PreparedStatement pstmt = null;
 
-    // 폼에서 전달된 값 받기
     String productName = request.getParameter("product_name");
     String salePrice = request.getParameter("sale_price");
     String shippingCharge = request.getParameter("shipping_charge");
 
     try {
-        // JDBC 연결 설정
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-
-        // INSERT 쿼리
         String sql = "INSERT INTO products (product_name, sale_price, shipping_charge) VALUES (?, ?, ?)";
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, productName);
         pstmt.setInt(2, Integer.parseInt(salePrice));
         pstmt.setInt(3, Integer.parseInt(shippingCharge));
 
-        int result = pstmt.executeUpdate(); // 쿼리 실행
+        int result = pstmt.executeUpdate(); 
 
         if (result > 0) {
 %>

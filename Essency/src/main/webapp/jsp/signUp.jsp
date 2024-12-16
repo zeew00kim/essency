@@ -5,7 +5,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회원가입 페이지</title>
-<!-- Bootstrap CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -75,7 +74,6 @@
 				}
 				%>
 				<form action="/Essency/signUpControl" method="POST">
-					<!-- 아이디 입력 -->
 					<div class="mb-3">
 						<label for="username" class="form-label">아이디</label>
 						<div class="input-group">
@@ -86,30 +84,22 @@
 
 						</div>
 						<p id="username-feedback"></p>
-						<!-- 중복 확인 결과 표시 -->
 					</div>
-					<!-- 비밀번호 입력 -->
 					<div class="mb-3">
 						<label for="password" class="form-label">비밀번호</label> <input
 							type="password" class="form-control" id="password"
 							name="password" placeholder="비밀번호를 입력하세요" required>
 					</div>
-
-					<!-- 비밀번호 확인 -->
 					<div class="mb-3">
 						<label for="confirmPassword" class="form-label">비밀번호 확인</label> <input
 							type="password" class="form-control" id="confirmPassword"
 							name="confirmPassword" placeholder="비밀번호를 다시 입력하세요" required>
 					</div>
-
-					<!-- 이메일 입력 -->
 					<div class="mb-3">
 						<label for="email" class="form-label">이메일</label> <input
 							type="email" class="form-control" id="email" name="email"
 							placeholder="이메일을 입력하세요" required>
 					</div>
-
-					<!-- 핸드폰 번호 입력 -->
 					<div class="mb-3">
 						<label for="phone" class="form-label">핸드폰 번호</label> <input
 							type="tel" class="form-control" id="phone"
@@ -117,9 +107,6 @@
 							pattern="\d{10,11}" required> 
 							<small class="form-text text-muted">'-' 제외하고 입력
 					</div>
-
-
-					<!-- 회원가입 버튼 -->
 					<button type="submit" class="btn btn-primary w-100">회원가입</button>
 				</form>
 				<div class="text-center mt-3">
@@ -131,11 +118,10 @@
 			</div>
 		</div>
 	</div>
-	<!-- Bootstrap JS -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
-	let isUsernameAvailable = false; // 아이디 중복 확인 상태 저장
+	let isUsernameAvailable = false; 
 
 	document.getElementById("check-username-btn").addEventListener("click", function () {
 	    const username = document.getElementById("username").value;
@@ -143,7 +129,7 @@
 	    if (!username) {
 	        document.getElementById("username-feedback").innerText = "아이디를 입력해주세요.";
 	        document.getElementById("username-feedback").style.color = "red";
-	        isUsernameAvailable = false; // 상태 초기화
+	        isUsernameAvailable = false; 
 	        return;
 	    }
 
@@ -160,43 +146,38 @@
 	        if (data.available) {
 	            feedback.innerText = "사용 가능한 아이디입니다.";
 	            feedback.style.color = "green";
-	            isUsernameAvailable = true; // 상태 업데이트
+	            isUsernameAvailable = true; 
 	        } else {
 	            feedback.innerText = "이미 사용 중인 아이디입니다.";
 	            feedback.style.color = "red";
-	            isUsernameAvailable = false; // 상태 업데이트
+	            isUsernameAvailable = false; 
 	        }
 	    })
 	    .catch(error => {
 	        console.error("Error:", error);
 	        document.getElementById("username-feedback").innerText = "오류가 발생했습니다. 다시 시도해주세요.";
 	        document.getElementById("username-feedback").style.color = "red";
-	        isUsernameAvailable = false; // 상태 초기화
+	        isUsernameAvailable = false; 
 	    });
 	});
 
-	// 회원가입 버튼 클릭 시 검증
 	document.querySelector("form").addEventListener("submit", function (event) {
 	    const password = document.getElementById("password").value;
 	    const confirmPassword = document.getElementById("confirmPassword").value;
-
-	    // 아이디 중복 확인 여부 체크
 	    if (!isUsernameAvailable) {
-	        event.preventDefault(); // 폼 제출 방지
+	        event.preventDefault(); 
 	        alert("아이디 중복 확인을 진행해주세요.");
 	        return;
 	    }
-
-	    // 비밀번호 일치 여부 체크
 	    if (password !== confirmPassword) {
-	        event.preventDefault(); // 폼 제출 방지
+	        event.preventDefault(); 
 	        alert("비밀번호가 일치하지 않습니다.");
 	        return;
 	    }
 	});
 	document.getElementById("phone").addEventListener("input", function (event) {
 	    const input = event.target;
-	    input.value = input.value.replace(/[^0-9]/g, ""); // 숫자 외 제거
+	    input.value = input.value.replace(/[^0-9]/g, ""); 
 	});
 	document.getElementById("confirmPassword").addEventListener("input", function () {
 	    const password = document.getElementById("password").value;

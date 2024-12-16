@@ -24,7 +24,6 @@ public class VerifyPasswordController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 세션에서 사용자명 가져오기
 		HttpSession session = request.getSession();
 		User loggedInUser = (User) session.getAttribute("loggedInUser");
 		String username = loggedInUser.getUsername();
@@ -36,15 +35,12 @@ public class VerifyPasswordController extends HttpServlet {
 		}
 
 		try {
-			// 데이터베이스에서 사용자 정보 가져오기
 			User user = userDAO.getUserByUsername(username);
 
 			if (user != null && user.getPassword().equals(inputPassword)) {
-				// 비밀번호 일치: 세션에 인증 플래그 설정
 				session.setAttribute("verified", true);
-				response.sendRedirect("/Essency/jsp/editProfile.jsp"); // 개인정보 수정 페이지로 이동
+				response.sendRedirect("/Essency/jsp/editProfile.jsp"); 
 			} else {
-				// 비밀번호 불일치 또는 사용자 없음
 				request.setAttribute("error", "비밀번호가 일치하지 않습니다.");
 				request.getRequestDispatcher("/jsp/verifyPassword.jsp").forward(request, response);
 			}

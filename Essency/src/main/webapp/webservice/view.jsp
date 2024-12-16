@@ -86,7 +86,6 @@
 </head>
 <body>
 <%@ include file="header.jsp" %>
-    <%-- 게시글 내용 --%>
     <div class="post-container">
         <%
             Connection conn = null;
@@ -126,7 +125,6 @@
         </div>
         <p style="color: #444444; margin-bottom: 30px;"><%= rs.getString("content") %></p>
 
-        <%-- 수정 및 삭제 버튼: 로그인한 사용자와 작성자 일치 시 표시 --%>
         <% if (loggedInUser.getUsername().equals(postAuthor)) { %>
         <div class="btn-container">
             <a href="edit_post.jsp?id=<%= id %>" class="btn-edit">수정</a>

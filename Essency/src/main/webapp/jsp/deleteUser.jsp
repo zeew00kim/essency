@@ -9,7 +9,6 @@
 </head>
 <body>
 <%
-    // 사용자 삭제 처리
     String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
     String dbUser = "root";
     String dbPassword = "root";
@@ -45,7 +44,6 @@
         }
     }
 
-    // 사용자 관리 페이지로 리다이렉트
     response.sendRedirect("userManage.jsp");
 %>
 </body>

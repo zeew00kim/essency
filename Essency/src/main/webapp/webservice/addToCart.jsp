@@ -22,8 +22,6 @@
       String dbUser = "root";
       String dbPassword = "root";
       conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-
-      // `users` 테이블에서 user_id 가져오기
       String userQuery = "SELECT user_id FROM users WHERE username = ?";
       pstmt = conn.prepareStatement(userQuery);
       pstmt.setString(1, username);
@@ -36,8 +34,6 @@
           out.println("<p>사용자 정보를 찾을 수 없습니다.</p>");
           return;
       }
-
-      // `cart` 테이블에 데이터 삽입
       String insertQuery = "INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)";
       pstmt = conn.prepareStatement(insertQuery);
       pstmt.setInt(1, userId);

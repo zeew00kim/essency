@@ -63,11 +63,10 @@
                 PreparedStatement pstmt = null;
                 ResultSet rs = null;
 
-                String search = request.getParameter("search"); // 검색어
-                String filter = request.getParameter("filter"); // 검색 필터
+                String search = request.getParameter("search"); 
+                String filter = request.getParameter("filter"); 
 
                 try {
-                    // 데이터베이스 연결
                     String jdbcUrl = "jdbc:mysql://localhost:3306/essency?useSSL=false&serverTimezone=UTC";
                     String dbId = "root";
                     String dbPass = "rkdwlgns78?";
@@ -75,7 +74,6 @@
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     conn = DriverManager.getConnection(jdbcUrl, dbId, dbPass);
 
-                    // SQL 쿼리 생성
                     String sql = "";
                     if ("title".equals(filter)) {
                         sql = "SELECT * FROM board WHERE title LIKE ?";
@@ -95,7 +93,6 @@
 
                     rs = pstmt.executeQuery();
 
-                    // 결과 출력
                     while (rs.next()) {
                         int id = rs.getInt("id");
                         String title = rs.getString("title");

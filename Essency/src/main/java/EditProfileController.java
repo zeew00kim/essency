@@ -28,7 +28,6 @@ public class EditProfileController extends HttpServlet {
     
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	// 세션에서 사용자명 가져오기
         HttpSession session = request.getSession();
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         
@@ -38,8 +37,6 @@ public class EditProfileController extends HttpServlet {
         }
         
         String username = loggedInUser.getUsername();
-
-        // 요청 데이터 가져오기
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String password = request.getParameter("password");
@@ -57,16 +54,13 @@ public class EditProfileController extends HttpServlet {
             loggedInUser.setPhone(phone);
 
             if (password != null && !password.isEmpty()) {
-                loggedInUser.setPassword(password); // 비밀번호가 입력된 경우만 업데이트
-                userDAO.updateUser(loggedInUser); // 비밀번호 포함 업데이트
+                loggedInUser.setPassword(password); 
+                userDAO.updateUser(loggedInUser); 
             } else {
-                userDAO.updateUserWithoutPassword(loggedInUser); // 비밀번호 제외 업데이트
+                userDAO.updateUserWithoutPassword(loggedInUser);
             }
 
-            // 세션 데이터 업데이트
             session.setAttribute("loggedInUser", loggedInUser);
-
-            // 성공 페이지로 리다이렉트
             response.sendRedirect("/Essency/webservice/jsp/my_page.jsp");
 
         } catch (Exception e) {

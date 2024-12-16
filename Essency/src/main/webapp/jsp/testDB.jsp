@@ -31,13 +31,9 @@
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = java.sql.DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-
-            out.println("<p class='success'>[성공] 데이터베이스 연결 성공!</p>");
-
-            // 간단한 쿼리 실행 (테이블 목록 조회)
+            out.println("<p class='success'>[성공] 데이터베이스 연결 성공!</p>");            
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SHOW TABLES");
-
             out.println("<h2>테이블 목록:</h2>");
             out.println("<ul>");
             while (rs.next()) {

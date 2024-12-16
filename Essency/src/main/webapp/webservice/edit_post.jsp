@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <title>게시글 수정</title>
     <style>
-        /* 전체 페이지 스타일 */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -15,7 +14,6 @@
             box-sizing: border-box;
             background-color: #f9f9f9;
         }
-        /* 메인 컨테이너 */
         .container {
             max-width: 800px;
             margin: 20px auto;
@@ -25,14 +23,12 @@
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        /* 제목 스타일 */
         .container h2 {
             text-align: center;
             font-size: 1.8em;
             color: #333;
             margin-bottom: 20px;
         }
-        /* 라벨과 입력 필드 */
         label {
             font-weight: bold;
             display: block;
@@ -50,7 +46,6 @@
         textarea {
             resize: none;
         }
-        /* 버튼 스타일 */
         .btn-submit {
             display: inline-block;
             padding: 10px 20px;
@@ -90,15 +85,11 @@
     String content = "";
 
     try {
-        // 데이터베이스 연결
         String jdbcUrl = "jdbc:mysql://localhost:3306/team_project";
         String dbId = "root";
         String dbPass = "root";
-
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection(jdbcUrl, dbId, dbPass);
-
-        // 기존 게시글 조회
         String sql = "SELECT title, content, author FROM board WHERE id = ?";
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, postId);
@@ -125,16 +116,10 @@
     <h2>게시글 수정</h2>
     <form action="update_post.jsp" method="post">
         <input type="hidden" name="id" value="<%= postId %>">
-
-        <!-- 제목 입력 -->
         <label for="title">제목:</label>
         <input type="text" id="title" name="title" value="<%= title %>" required>
-
-        <!-- 내용 입력 -->
         <label for="content">내용:</label>
         <textarea id="content" name="content" rows="10" required><%= content %></textarea>
-
-        <!-- 수정 완료 버튼 -->
         <div style="text-align: right;">
             <input type="submit" value="수정 완료" class="btn-submit">
         </div>

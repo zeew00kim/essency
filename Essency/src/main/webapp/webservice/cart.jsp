@@ -102,7 +102,6 @@
   </style>
 </head>
 <body>
-  <!-- Header 포함 -->
   <%@ include file="header.jsp" %>
 
   <main class="main">
@@ -122,10 +121,10 @@
       <tbody>
         <%
           User currentUser = (User) session.getAttribute("loggedInUser");
-          int totalPrice = 0; // 총 결제 금액
+          int totalPrice = 0; 
 
           if (currentUser != null) {
-              String username = currentUser.getUsername(); // 사용자 이름으로 식별
+              String username = currentUser.getUsername(); 
               Connection conn = null;
               PreparedStatement pstmt = null;
               ResultSet rs = null;
@@ -136,8 +135,6 @@
                   String dbUser = "root";
                   String dbPassword = "root";
                   conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-
-                  // cart와 products 테이블을 조인하여 데이터 가져오기
                   String query = "SELECT p.product_name, c.quantity, p.sale_price, p.shipping_charge, c.product_id " +
                                  "FROM cart c " +
                                  "JOIN products p ON c.product_id = p.product_id " +
@@ -163,7 +160,6 @@
                       <tr style="background-color: #f8f8f8">
                           <td>
                             <a href="<%= request.getContextPath() %>/webservice/itemdetail.jsp?productId=<%= productId %>">
-                              <!-- 제품 이미지 -->
                               <img src="<%= request.getContextPath() %>/webservice/image/<%= productName %>.jpg" 
                                    alt="<%= productName %>" class="product-img" style="margin-bottom: -5px;"><br>
                               <%= productName %>
@@ -174,7 +170,6 @@
                           <td><%= shippingCharge %>원</td>
                           <td><%= total %>원</td>
                           <td>
-                            <!-- 삭제 버튼 -->
                             <form action="deleteCartItem.jsp" method="POST" style="display:inline;" onsubmit="return confirm('해당 제품을 삭제하시겠습니까?')">
                               <input type="hidden" name="product_id" value="<%= productId %>">
                               <button type="submit" class="delete-btn">삭제</button>
@@ -215,8 +210,6 @@
     </div>
     <% } %>
   </main>
-
-  <!-- Footer 포함 -->
   <%@ include file="footer.jsp" %>
 </body>
 </html>

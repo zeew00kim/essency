@@ -2,9 +2,7 @@
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 
 <%
-    // 세션에서 로그인된 사용자 확인
     if (session == null || session.getAttribute("loggedInUser") == null) {
-        // 로그인되어 있지 않으면 로그인 페이지로 리다이렉트
         response.sendRedirect("/Essency/jsp/login.jsp");
         return;
     }
@@ -15,9 +13,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판 페이지</title>
-    <link rel="stylesheet" href="layout1.css"> <!-- 헤더 관련 CSS -->
+    <link rel="stylesheet" href="layout1.css"> 
     <style>
-        /* 페이지에만 영향을 미치는 스타일 */
         .write-container {
             font-family: Arial, sans-serif;
             margin: 20px auto;

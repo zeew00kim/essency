@@ -10,13 +10,13 @@
     body {
       display: flex !important;
       flex-direction: column !important;
-      min-height: 100vh !important; /* 전체 화면 높이 사용 */
+      min-height: 100vh !important; 
       font-family: 'Roboto', sans-serif !important;
       margin: 0 !important;
       background-color: #f8f9fa !important;
     }
     .container {
-      flex: 1 !important; /* 컨텐츠 영역이 남은 공간을 채우도록 설정 */
+      flex: 1 !important; 
     }
     footer {
       background-color: #B8D0FA !important;

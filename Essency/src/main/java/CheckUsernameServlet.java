@@ -17,11 +17,10 @@ public class CheckUsernameServlet extends HttpServlet {
 	
     public CheckUsernameServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     public void init() throws ServletException {
-        userDAO = new UserDAO(); // UserDAO 초기화
+        userDAO = new UserDAO();
     }
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,7 +28,6 @@ public class CheckUsernameServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
-            // 요청 본문에서 JSON 데이터 추출
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = request.getReader().readLine()) != null) {
@@ -38,10 +36,8 @@ public class CheckUsernameServlet extends HttpServlet {
             JsonObject jsonRequest = JsonParser.parseString(sb.toString()).getAsJsonObject();
             String username = jsonRequest.get("username").getAsString();
 
-            // 중복 확인
             boolean isAvailable = userDAO.isUsernameAvailable(username);
 
-            // JSON 응답 작성
             JsonObject jsonResponse = new JsonObject();
             jsonResponse.addProperty("available", isAvailable);
 

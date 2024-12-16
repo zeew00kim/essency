@@ -101,7 +101,6 @@
     <section class="m2">
       <div class="product_image">
         <%
-          // 데이터베이스 연결 설정
           String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
           String dbUser = "root";
           String dbPassword = "root";
@@ -111,11 +110,8 @@
           ResultSet rs = null;
 
           try {
-              // 데이터베이스 연결
               Class.forName("com.mysql.cj.jdbc.Driver");
               conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-
-              // 모든 상품 정보 조회
               String query = "SELECT product_id, product_name FROM products";
               pstmt = conn.prepareStatement(query);
               rs = pstmt.executeQuery();

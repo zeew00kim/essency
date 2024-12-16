@@ -77,7 +77,6 @@
     <%@ include file="header.jsp" %>
 
     <% 
-    // 로그인된 사용자 정보
     User currentUser = (User) session.getAttribute("loggedInUser");
     String userName = (currentUser != null) ? currentUser.getUsername() : "null";
     %>
@@ -86,10 +85,7 @@
       <section class="m2">
         <div class="product-image">
           <%
-            // 상품 ID를 URL에서 가져옴
             String productId = request.getParameter("productId");
-
-            // 데이터베이스 연결 설정
             String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
             String dbUser = "root";
             String dbPassword = "root";
@@ -106,8 +102,6 @@
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-
-                // 상품 정보 조회
                 String query = "SELECT product_name, sale_price, shipping_charge FROM products WHERE product_id = ?";
                 pstmt = conn.prepareStatement(query);
                 pstmt.setString(1, productId);
@@ -137,7 +131,7 @@
           <div class="buttons">
             <form action="addToCart.jsp" method="post" onsubmit="return showBanner()">
               <input type="hidden" name="productId" value="<%= productId %>">
-              <input type="hidden" name="quantity" value="1"> <!-- 기본 수량 설정 -->
+              <input type="hidden" name="quantity" value="1"> 
               <button type="submit" class="button">장바구니에 담기</button>
             </form>
             <form id="purchaseForm" action="processOrder.jsp" method="post" onsubmit="return confirmPurchase()">
@@ -185,9 +179,9 @@
             return false;
         }
         if (confirm("해당 상품을 구매하시겠습니까?")) {
-            return true; // 폼 제출
+            return true; 
         } else {
-            return false; // 현재 페이지 유지
+            return false;
         }
     }
   </script>

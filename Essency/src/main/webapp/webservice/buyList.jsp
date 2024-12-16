@@ -85,12 +85,10 @@
   </style>
 </head>
 <body>
-  <!-- Header 포함 -->
   <%@ include file="header.jsp" %>
 
   <main class="main">
     <h1 class="m1">구매 목록</h1>
-
     <table class="buy-table">
       <thead>
         <tr>
@@ -105,7 +103,7 @@
       <tbody>
         <%
           User currentUser = (User) session.getAttribute("loggedInUser");
-          int totalOrderPrice = 0; // 총 결제 금액
+          int totalOrderPrice = 0;
 
           if (currentUser != null) {
               String username = currentUser.getUsername();
@@ -119,8 +117,6 @@
                   String dbUser = "root";
                   String dbPassword = "root";
                   conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-
-                  // 주문 목록 가져오기
                   String query = "SELECT oi.product_id, p.product_name, oi.quantity, oi.price, p.shipping_charge, o.created_at " +
                                  "FROM orders o " +
                                  "JOIN order_items oi ON o.order_id = oi.order_id " +
@@ -193,8 +189,6 @@
     </div>
     <% } %>
   </main>
-
-  <!-- Footer 포함 -->
   <%@ include file="footer.jsp" %>
 </body>
 </html>

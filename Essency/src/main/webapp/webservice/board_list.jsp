@@ -5,9 +5,8 @@
 <head>
   <meta charset="UTF-8">
   <title>게시판 목록</title>
-  <link rel="stylesheet" href="layout1.css"> <!-- 헤더와 통일된 스타일 -->
+  <link rel="stylesheet" href="layout1.css">
   <style>
-    /* 공통 스타일 (중복 방지 및 통일) */
     html, body {
       margin: 0;
       padding: 0;
@@ -45,7 +44,6 @@
       transform: scale(1.05);
     }
 
-    /* 게시판 스타일 */
     .board-table {
       width: 80%;
       margin: 20px auto;
@@ -73,10 +71,9 @@
   </style>
 </head>
 <body>
-  <%@ include file="header.jsp" %> <!-- 헤더 포함 -->
+  <%@ include file="header.jsp" %> 
 
   <%
-    // 로그인 사용자 확인
     Object currentUser = session.getAttribute("loggedInUser");
 
     if (currentUser == null) {
@@ -106,10 +103,7 @@
               String jdbcUrl = "jdbc:mysql://localhost:3306/team_project";
               String dbUser = "root";
               String dbPass = "root";
-
               conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPass);
-
-              // 작성자가 '관리자'인 글을 상단에 위치하도록 우선순위를 부여하는 SQL 쿼리
               String query = 
                   "SELECT id, title, author, created_at " +
                   "FROM board " +
@@ -157,6 +151,6 @@
     </div>
   </main>
 
-  <%@ include file="footer.jsp" %> <!-- Footer 포함 -->
+  <%@ include file="footer.jsp" %>
 </body>
 </html>

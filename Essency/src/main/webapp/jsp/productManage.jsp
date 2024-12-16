@@ -127,7 +127,6 @@
     <h3 class="text-center mb-4" style="font-weight: bold">등록된 상품 정보</h3>
 
     <% 
-      // 데이터베이스 연결
       String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
       String dbUser = "root";
       String dbPassword = "root";
@@ -140,9 +139,7 @@
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
         stmt = conn.createStatement();
-        
-        // 상품 데이터 조회
-        String query = "SELECT * FROM products"; // 테이블 이름 products
+        String query = "SELECT * FROM products"; 
         rs = stmt.executeQuery(query);
     %>
     <table class="table table-bordered" style="border: 2px solid silver; width: 70%; margin: 0 auto;">

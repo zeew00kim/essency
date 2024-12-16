@@ -45,8 +45,8 @@
         font-weight: bold;
         border-radius: 5px;
         transition: transform 0.3s ease, background-color 0.3s ease;
-        display: block; /* 버튼을 블록 요소로 변경 */
-  		margin: 0 auto; /* 수평 중앙 정렬 */
+        display: block; 
+  		margin: 0 auto; 
         margin-bottom: 10px;
         width: 20%;
     }
@@ -109,13 +109,10 @@
   		border-radius: 10px; 
 	}
 </style>
-<script>
-  // 등록 버튼 클릭 시 확인 배너
+<script> 
   function confirmAdd() {
     return confirm("새로운 회원 정보를 등록하시겠습니까?");
   }
-
-  // 삭제 버튼 클릭 시 확인 배너
   function confirmDelete() {
     return confirm("등록된 회원 정보를 삭제하시겠습니까?");
   }
@@ -129,7 +126,6 @@
     <h3 class="text-center mb-4" style="font-weight: bold">등록된 계정 정보</h3>
     
     <% 
-      // 데이터베이스 연결
       String jdbcURL = "jdbc:mysql://localhost:3306/team_project";
       String dbUser = "root";
       String dbPassword = "root";
@@ -142,9 +138,7 @@
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
         stmt = conn.createStatement();
-        
-        // 사용자 데이터 조회
-        String query = "SELECT * FROM users"; // 테이블 이름 users
+        String query = "SELECT * FROM users";
         rs = stmt.executeQuery(query);
     %>
     <table class="table table-bordered" style="border: 2px solid silver; width: 80%; margin:0 auto; margin-bottom: 20px;">

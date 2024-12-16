@@ -2,7 +2,6 @@
 <%@ page import="jakarta.servlet.http.*, java.sql.*, Essency.User"%>
 
 <%
-    // 세션에서 사용자 정보 가져오기
     User loggedInUser = (User) session.getAttribute("loggedInUser");
 
     if (loggedInUser == null) {
@@ -10,12 +9,10 @@
         return;
     }
 
-    // 클라이언트에서 전달받은 데이터
     String email = request.getParameter("email");
     String phone = request.getParameter("phone");
     String password = request.getParameter("password");
 
-    // 데이터베이스 업데이트 로직
     Connection conn = null;
     PreparedStatement pstmt = null;
 
@@ -32,12 +29,9 @@
 
         int rowsUpdated = pstmt.executeUpdate();
         if (rowsUpdated > 0) {
-            // 세션 정보 업데이트
             loggedInUser.setEmail(email);
             loggedInUser.setPhone(phone);
             session.setAttribute("loggedInUser", loggedInUser);
-
-            // 성공적으로 업데이트 후 이동
             response.sendRedirect("my_page.jsp");
         } else {
             out.println("<p>프로필 업데이트에 실패했습니다.</p>");

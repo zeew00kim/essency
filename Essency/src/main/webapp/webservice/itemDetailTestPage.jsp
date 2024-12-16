@@ -6,7 +6,6 @@
   <title>제품 상세 페이지</title>
   <link href="layout1.css" rel="stylesheet" type="text/css">
   <style>
-    /* 글로벌 스타일 */
     html, body {
       margin: 0;
       padding: 0;
@@ -17,8 +16,6 @@
     * {
       box-sizing: inherit;
     }
-
-    /* 공통 스타일 */
     a {
       text-decoration: none;
       font-weight: bold;
@@ -66,8 +63,6 @@
       display: block;
       margin: 5px auto;
     }
-
-    /* 배너 스타일 */
     .confirm-banner {
       display: none;
       position: fixed;
