@@ -148,7 +148,7 @@
           <img src="image/KakaoTalk_20241207_142012247_01.jpg" alt="상세정보 이미지 1">
         </div>
         <div class="mf2">
-          <img src="image/KakaoTalk_20241207_142012247_04.jpg" alt="상세정보 이미지 2">
+          <img src="image/caution.jpg" alt="상세정보 이미지 2">
         </div>
         <div class="mf3">          
           <img src="image/KakaoTalk_20241207_142012247.jpg" alt="멤버십 혜택 이미지">
